@@ -11,8 +11,8 @@ Sem regras presas a um sistema específico: atributos, status, perícias, podere
 | **ID Cards** | Lista de ID Cards (fichas) com foto, Talento Supremo, classe e busca |
 | **Ficha** | Dados básicos, hexágono de 6 atributos (CRI, MAN, COM, PER, INT, PRE) editáveis e barras de status (HP, Stamina, Mental) com botões «‹›» |
 | **Perícias** | Atributo relacionado, treino, bônus e rolagem de D20 com um clique |
-| **Habilidades, Rituais, Inventário** | Listas em sanfona; o botão “Adicionar da Biblioteca” copia o que o Mestre cadastrou |
-| **Biblioteca (só Mestre)** | Cadastro de habilidades, rituais e itens disponíveis para todas as fichas |
+| **Talentos, Evidências, Itens** | Listas em sanfona; o botão “Adicionar da Biblioteca” copia o que o Mestre cadastrou |
+| **Biblioteca (só Mestre)** | Cadastro de talentos, evidências e itens disponíveis para todas as fichas |
 | **Combate** | Dados (D4–D20 e personalizado), histórico e ordem de turno |
 | **Investigação / Julgamento** | Pistas, evidências, suspeitos, argumentos e provas |
 | **Campanhas, Ameaças, Homebrew, Patente** | Gestão de campanhas, NPCs e monstros, patentes |

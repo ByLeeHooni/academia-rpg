@@ -8,7 +8,7 @@ Sem regras presas a um sistema específico: atributos, status, perícias, podere
 
 | Área | O que faz |
 |---|---|
-| **Agentes** | Lista de personagens com foto, Talento Supremo, classe e busca |
+| **ID Cards** | Lista de ID Cards (fichas) com foto, Talento Supremo, classe e busca |
 | **Ficha** | Dados básicos, pentágono de 5 atributos editáveis e barras de status (HP, Stamina, Mental) com botões «‹›» |
 | **Perícias** | Atributo relacionado, treino, bônus e rolagem de D20 com um clique |
 | **Habilidades / Inventário** | Itens e poderes em sanfona, com categorias, custo, recarga, peso e favoritos |

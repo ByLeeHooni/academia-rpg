@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html lang="pt-BR"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Academia · Sistema de Fichas</title>
+<style>
+:root{color-scheme:dark;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);--bg:#09060f;--pn:#150e20;--ln:#2d1c48;--pk:#ff2e93;--pu:#9b5cff;--bl:#3fa9ff;--tx:#ece6ff;--mu:#8d82a8}
+*{box-sizing:inherit}html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:var(--bg);color:var(--tx);font:14px/1.4 "Segoe UI",system-ui,sans-serif;min-height:100vh}
+body:before{content:"";position:fixed;inset:0;pointer-events:none;background:repeating-linear-gradient(135deg,transparent 0 40px,#ff2e930a 40px 80px)}
+@keyframes in{from{opacity:0;transform:translateY(8px)}}
+header{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:10px 18px;background:#05030aef;position:sticky;top:env(safe-area-inset-top,0px);z-index:5;border-bottom:2px solid;border-image:linear-gradient(90deg,var(--pk),var(--pu),var(--bl),transparent) 1;flex-wrap:wrap}
+.logo{font:800 20px "Courier New",monospace;letter-spacing:4px;color:#fff;text-shadow:2px 0 var(--pk),-2px 0 var(--bl)}
+.logo small{color:var(--pk);font-size:10px;letter-spacing:2px;margin-left:6px;text-shadow:none}
+#nav{display:flex;gap:18px;flex-wrap:wrap}#nav a{color:var(--tx);text-decoration:none;font-size:15px;padding-bottom:2px;border-bottom:2px solid transparent}
+#nav a.on{border-color:var(--pu);color:#fff;text-shadow:0 0 8px var(--pu)}#nav a:hover{color:var(--pk)}
+.tools{display:flex;gap:6px;align-items:center}.tools select,.tools button{padding:3px 6px;font-size:12px}
+input,select,textarea,button{font:inherit;color:var(--tx);background:#0d0817;border:1px solid var(--ln);border-radius:3px;padding:6px 8px;min-width:0}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--bl);box-shadow:0 0 8px #3fa9ff66}
+textarea{width:100%;min-height:70px;resize:vertical}
+button{cursor:pointer;transition:.2s}button:hover{border-color:var(--pk);color:#fff}
+.btn{background:linear-gradient(90deg,var(--pu),var(--pk));border:0;color:#fff;font-weight:700;font-size:12px;padding:6px 12px;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%)}
+.btn:hover{filter:brightness(1.2);box-shadow:0 0 14px var(--pk)}
+main{padding:20px 16px;max-width:1200px;margin:auto;animation:in .4s}
+h2{font:700 13px "Courier New",monospace;letter-spacing:2px;color:var(--bl);margin:0 0 10px;text-transform:uppercase}h2:before{content:"▌";color:var(--pk);margin-right:6px}
+.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px;gap:10px;flex-wrap:wrap}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px}
+.card{background:var(--pn);border:1px solid var(--ln);border-left:3px solid var(--pu);border-radius:3px;animation:in .35s}
+.card:hover{border-left-color:var(--pk);box-shadow:0 0 16px #ff2e9322}
+.ag{display:flex;gap:14px;padding:0;min-height:112px;position:relative}
+.pic{width:110px;flex:none;background:#000 center/cover;display:grid;place-items:center;font:800 36px "Courier New",monospace;color:var(--pk);clip-path:polygon(0 0,100% 0,88% 100%,0 100%)}
+.ag .i{padding:10px 8px;display:flex;flex-direction:column;flex:1;min-width:0}.ag b{font-size:18px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}.ag small{color:var(--mu);font-size:11px}
+.ag .btn{margin-top:auto;align-self:flex-end}.gear{position:absolute;top:6px;right:8px;border:0;background:none;padding:2px}
+.ban{height:200px;background:linear-gradient(160deg,#2b0f4a,#000 60%),radial-gradient(circle,var(--pk),transparent);display:flex;flex-direction:column;justify-content:flex-end;padding:12px;position:relative;border-left:3px solid var(--pk)}
+.ban:after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(135deg,transparent 0 14px,#ff2e9318 14px 28px)}
+.ban *{position:1;z-index:1}.ban .bt{display:flex;justify-content:space-between;align-items:flex-end;gap:8px}.ban b{font-size:20px}
+.sheet{display:grid;grid-template-columns:minmax(280px,1fr) minmax(260px,1fr) minmax(300px,1.1fr);gap:16px}
+@media(max-width:1000px){.sheet{grid-template-columns:1fr}}
+.pad{padding:12px}
+.fl{display:flex;flex-wrap:wrap;gap:8px 14px;align-items:flex-end}.fl label{font-size:10px;text-transform:uppercase;color:var(--mu);flex:1;min-width:120px;display:block}
+.fl input{width:100%;background:none;border:0;border-bottom:1px solid var(--mu);border-radius:0;font-size:14px}
+.av{width:90px;height:110px;background:#000 center/cover;border:2px solid var(--pk);cursor:pointer;display:grid;place-items:center;font-size:10px;text-align:center;color:var(--mu);flex:none;box-shadow:0 0 14px #ff2e9355}
+.tal{font:800 15px "Courier New",monospace;color:var(--pk);text-shadow:0 0 8px var(--pk)}
+.pent{position:relative;width:300px;height:300px;margin:8px auto}
+.pent .a{position:absolute;width:84px;height:84px;margin:-42px;border-radius:50%;border:2px solid var(--pu);background:#0d0817;display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:0 0 12px #9b5cff55;transition:.2s}
+.pent .a:hover{border-color:var(--pk);box-shadow:0 0 16px var(--pk)}
+.pent .a input{width:46px;text-align:center;border:0;background:none;padding:0;font:800 24px "Courier New",monospace}
+.pent .a input.n{font:700 11px "Courier New",monospace;color:var(--mu);width:50px}
+.pent .c{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);font:800 13px "Courier New",monospace;letter-spacing:2px;border:1px solid var(--pk);padding:8px;background:#000;text-shadow:0 0 6px var(--pk)}
+.vit{margin:10px 0}.vit>div:first-child{text-align:center;font:700 11px "Courier New",monospace;letter-spacing:2px;color:var(--mu);margin-bottom:2px}
+.vb{display:flex;align-items:stretch;border:1px solid var(--ln);background:#000}
+.vb button{border:0;border-radius:0;background:#0d0817;padding:6px 9px}.vb .m{flex:1;display:flex;justify-content:center;align-items:center;gap:2px;font-weight:700}
+.vb .m input{width:48px;text-align:center;background:none;border:0;padding:2px}
+table{width:100%;border-collapse:collapse;font-size:13px}th{font:10px "Courier New",monospace;color:var(--mu);text-align:left;font-weight:400}
+td{padding:3px 2px}td input,td select{width:100%;background:none;border:0;border-bottom:1px solid var(--ln);border-radius:0;padding:2px}td input[type=number]{width:44px;text-align:center}
+.dice{cursor:pointer;color:var(--pk);border:0;background:none;padding:2px}.tr{color:var(--bl);font-weight:700}
+.tabs{display:flex;gap:2px;overflow-x:auto;border-bottom:1px solid var(--ln);margin-bottom:10px}.tabs button{border:0;border-bottom:2px solid transparent;background:none;text-transform:uppercase;font-size:11px;letter-spacing:1px;border-radius:0;white-space:nowrap}
+.tabs button.on{border-color:var(--pk);color:var(--pk)}
+details.acc{background:#1c1428;margin-bottom:6px;border-left:2px solid var(--pu);animation:in .3s}details.acc summary{padding:10px;cursor:pointer;font-weight:600;color:#fff}
+details.acc[open]{border-left-color:var(--pk)}details.acc .b{padding:6px 10px 10px;display:flex;flex-direction:column;gap:6px}
+.b label{font-size:10px;text-transform:uppercase;color:var(--mu)}.b input,.b select{width:100%}
+.red{color:#ff5470;background:none;border:0;font-size:12px;align-self:flex-start;padding:0}
+.log{max-height:200px;overflow:auto;font:12px "Courier New",monospace}.log div{padding:3px 0;border-bottom:1px dashed var(--ln)}
+.sec{border-left:3px solid var(--pk);background:#1a0a1a;padding:8px;margin:6px 0}
+.star{border:0;background:none;padding:0 4px;color:var(--mu)}.star.on{color:#ffd54a}
+.row{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+</style></head><body>
+<header><div class="logo">A.C.A.D.<small>FICHAS</small></div><nav id="nav"></nav>
+<div class="tools"><select id="role"><option value="p">Jogador</option><option value="m">Mestre</option></select><button id="snd">🔇</button><button id="ver">Versões</button><span id="sv" style="font-size:11px;color:var(--mu)">salvo</span></div></header>
+<main id="app"></main>
+<script>
+const $=s=>document.querySelector(s),uid=()=>Math.random().toString(36).slice(2,8);
+const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const NC=n=>({id:uid(),name:n||"Novo Agente",origin:"",cls:"",player:"",talent:"",quote:"",avatar:"",date:new Date().toLocaleDateString("pt-BR"),camp:"",pp:0,rank:"",
+attrs:["AGI","FOR","INT","PRE","VIG"].map(n=>({n,v:1})),vit:[{n:"HP",c:40,m:40,k:"#ff2e93"},{n:"Stamina",c:30,m:30,k:"#ffb03f"},{n:"Mental",c:35,m:35,k:"#3fa9ff"}],
+skills:["Investigação","Persuasão","Combate","Percepção","Furtividade","Tecnologia","Medicina","Intimidação"].map(n=>({n,a:0,t:0,o:0})),powers:[],inv:[],clues:[],trial:[],desc:"",sec:{}});
+let S={chars:[NC("Agente Exemplo")],camps:[{id:uid(),name:"Primeiro Julgamento",date:new Date().toLocaleDateString("pt-BR"),role:"Mestre",n:1}],threats:[],home:[],ranks:[{name:"Estudante",pts:0},{name:"Operador",pts:20}],combat:[],turn:0,rolls:[],versions:[]};
+S.chars[0].talent="Detetive";S.chars[0].quote="A verdade sempre vem à tona.";
+try{const r=localStorage.getItem("acad2");if(r)S=Object.assign(S,JSON.parse(r))}catch(e){}
+let rt="habilidades",snd=false,cnt=0,tm,q="";
+const isM=()=>$("#role").value==="m",hit=o=>!q||JSON.stringify(o).toLowerCase().includes(q.toLowerCase());
+const save=()=>{clearTimeout(tm);$("#sv").textContent="salvando…";tm=setTimeout(()=>{try{localStorage.setItem("acad2",JSON.stringify(S))}catch(e){}if(++cnt%15===0)snap();$("#sv").textContent="salvo ✓"},400)};
+const snap=()=>{S.versions.unshift({t:new Date().toLocaleString("pt-BR"),d:JSON.stringify(Object.assign({},S,{versions:[]}))});S.versions=S.versions.slice(0,10)};
+const beep=f=>{if(!snd)return;try{const a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.frequency.value=f||660;o.type="square";g.gain.value=.04;o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.06)}catch(e){}};
+const setP=(p,v)=>{const k=p.split(".");let o=S;for(let i=0;i<k.length-1;i++)o=o[k[i]];o[k.at(-1)]=v};
+const fld=(p,l,v,t)=>`<label>${l}${t==="a"?`<textarea data-p="${p}">${esc(v)}</textarea>`:`<input data-p="${p}" ${t?`type="${t}"`:""} value="${esc(v)}">`}</label>`;
+const LISTS={powers:{t:"Habilidade",f:[["name","Nome"],["cat","Categoria"],["cost","Custo (ex: 10 Mental)"],["cd","Recarga"],["lvl","Nível","number"],["desc","Descrição","a"],["eff","Efeito","a"]]},
+inv:{t:"Item",f:[["name","Item"],["cat","Categoria"],["qty","Quantidade","number"],["weight","Peso","number"],["desc","Descrição","a"]]},
+clues:{t:"Entrada",f:[["name","Título"],["type","Tipo (Pista/Evidência/Suspeito/Nota)"],["desc","Detalhes","a"]]},
+trial:{t:"Argumento",f:[["name","Autor"],["type","Tipo (Argumento/Prova/Resposta)"],["desc","Texto","a"]]}};
+const cur=()=>{const id=location.hash.slice(7);const i=S.chars.findIndex(c=>c.id===id);return i}
+function acc(base,k,ci){const a=S.chars[ci][k],L=LISTS[k];
+ return `<div class="row" style="margin-bottom:8px"><button class="btn" data-a="add" data-k="${k}" data-ci="${ci}">+ ${L.t}</button></div>`+a.map((o,i)=>hit(o)?`<details class="acc"><summary><span class="star ${o.fav?"on":""}" data-a="fav" data-k="${k}" data-ci="${ci}" data-i="${i}">★</span>${esc(o.name||"Sem nome")}</summary><div class="b">`+
+ L.f.map(([f,l,t])=>fld(`chars.${ci}.${k}.${i}.${f}`,l,o[f]??"",t)).join("")+`<button class="red" data-a="del" data-k="${k}" data-ci="${ci}" data-i="${i}">Remover</button></div></details>`:"").join("")}
+const pos=i=>{const a=(-90+i*72)*Math.PI/180;return `left:${150+108*Math.cos(a)}px;top:${150+108*Math.sin(a)}px`};
+const tot=(c,s)=>(c.attrs[s.a]?.v||0)+(+s.t||0)+(+s.o||0);
+const RT=[["combate","Combate"],["habilidades","Habilidades"],["inv","Inventário"],["clues","Investigação"],["trial","Julgamento"],["desc","Descrição"]];
+const bar=(c,m,k)=>`linear-gradient(90deg,${k} ${m?Math.min(100,c/m*100):0}%,#0d0817 0)`;
+function rtab(c,ci){const P=`chars.${ci}.`;
+ if(rt==="combate")return `<div class="row" style="margin-bottom:8px">${[4,6,8,10,12,20].map(d=>`<button class="btn" data-a="roll" data-d="${d}">D${d}</button>`).join("")}<input id="cs" type="number" placeholder="Lados" style="width:70px"><button data-a="roll" data-d="c">Custom</button></div>
+ <div class="log">${S.rolls.map(r=>`<div>${esc(r)}</div>`).join("")||"Sem rolagens."}</div><h2 style="margin-top:14px">Ordem de turno</h2><button class="btn" data-a="addc">+ Participante</button> <button data-a="next">Próximo ▶</button>`+
+ S.combat.map((o,i)=>({o,i})).sort((x,y)=>(y.o.ini||0)-(x.o.ini||0)).map(({o,i},p,arr)=>`<details class="acc" ${p===S.turn%arr.length?"open":""}><summary>${p===S.turn%arr.length?"▶ ":""}${esc(o.n)} — HP ${o.c}/${o.m}</summary><div class="b">${fld(`combat.${i}.n`,"Nome",o.n)}<div class="row"><label>HP<input type="number" data-p="combat.${i}.c" data-r="1" value="${o.c}"></label><label>Máx<input type="number" data-p="combat.${i}.m" value="${o.m}"></label><label>Iniciativa<input type="number" data-p="combat.${i}.ini" value="${o.ini||0}"></label></div>${fld(`combat.${i}.st`,"Status negativos / ataques",o.st||"")}<button class="red" data-a="del" data-k="combat" data-i="${i}">Remover</button></div></details>`).join("");
+ if(rt==="inv")return `<div class="fl" style="margin-bottom:10px">${fld(P+"pp","Pontos de prestígio",c.pp,"number")}<label>Patente<select data-p="${P}rank"><option></option>${S.ranks.map(r=>`<option ${r.name===c.rank?"selected":""}>${esc(r.name)}</option>`).join("")}</select></label></div>`+acc(P,"inv",ci);
+ if(rt==="desc")return fld(P+"desc","História / Descrição",c.desc,"a")+(isM()?`<h2 style="margin-top:12px">Arquivo confidencial</h2>`+[["pers","Personalidade"],["obj","Objetivos"],["fear","Medos"],["secr","Segredos"],["trau","Traumas"],["rel","Relacionamentos"]].map(([k,l])=>`<div class="sec">${fld(P+"sec."+k,l,c.sec[k]||"","a")}</div>`).join(""):`<p style="color:var(--mu)">🔒 Informações ocultas: só o Mestre vê.</p>`);
+ return acc(P,rt,ci)}
+const P={
+agentes(){return `<div class="top"><b>Agentes: ${S.chars.length}/15</b><button class="btn" data-a="newc">Novo Agente</button></div><div class="grid">`+S.chars.map((c,i)=>hit(c)?`<div class="card ag"><div class="pic" style="${c.avatar?`background-image:url(${c.avatar})`:""}">${c.avatar?"":esc((c.name||"?")[0])}</div><div class="i"><b>${esc(c.name)}</b><small style="color:var(--pk)">${c.talent?"Ultimate "+esc(c.talent):"Talento ???"}</small><small>${esc(c.cls)}</small><small>Registrado em ${c.date}</small><a class="btn" href="#ficha-${c.id}" style="text-decoration:none;color:#fff">Acessar Ficha</a></div><button class="gear" data-a="delc" data-i="${i}" title="Excluir">⚙</button></div>`:"").join("")+`</div>`},
+campanhas(){return `<div class="top"><b>Campanhas: ${S.camps.length}/6</b><button class="btn" data-a="newcamp">Nova Campanha</button></div><div class="grid">`+S.camps.map((o,i)=>`<div class="card"><div class="ban"><small>👥 ${S.chars.filter(c=>c.camp===o.id).length}</small><div class="bt"><div><b>${esc(o.name)}</b><br><small>Iniciada em: ${o.date} | ${o.role}</small></div><button class="btn" data-a="del" data-k="camps" data-i="${i}">Excluir</button></div></div></div>`).join("")+`</div>`},
+ameacas(){return `<div class="top"><b>Ameaças e NPCs</b>${isM()?`<button class="btn" data-a="addth">+ Ameaça</button>`:""}</div><div class="grid">`+S.threats.map((o,i)=>hit(o)?`<div class="card pad">${fld(`threats.${i}.name`,"Nome",o.name)}${fld(`threats.${i}.type`,"Tipo (Monstro/NPC)",o.type||"")}${fld(`threats.${i}.hp`,"Vida",o.hp||"")}${fld(`threats.${i}.desc`,"Descrição","","a").replace("></textarea>",`>${esc(o.desc||"")}</textarea>`)}${isM()?`<button class="red" data-a="del" data-k="threats" data-i="${i}">Remover</button>`:""}</div>`:"").join("")+`</div>`},
+homebrew(){const M=isM();return `<div class="top"><b>Nuvem do Mestre</b></div>`+(M?`<div class="card pad row" style="margin-bottom:14px"><select id="ct">${["Item","Poder","Perícia","Classe","Monstro","NPC","Mapa","Arquivo"].map(x=>`<option>${x}</option>`).join("")}</select><input id="cn" placeholder="Nome"><input id="cd" placeholder="Descrição" style="flex:1"><button class="btn" data-a="addcloud">Publicar</button></div>`:"")+`<div class="grid">`+S.home.map((o,i)=>hit(o)?`<div class="card pad"><small style="color:var(--pk)">${o.t}</small><br><b>${esc(o.n)}</b><p style="color:var(--mu)">${esc(o.d)}</p>${["Item","Poder","Perícia","Classe"].includes(o.t)?`<button class="btn" data-a="take" data-i="${i}">Adicionar à ficha</button> `:""}${M?`<button class="red" data-a="del" data-k="home" data-i="${i}">✕</button>`:""}</div>`:"").join("")+`</div>`},
+patente(){return `<div class="top"><b>Patentes</b>${isM()?`<button class="btn" data-a="addrank">+ Patente</button>`:""}</div><div class="grid">`+S.ranks.map((r,i)=>`<div class="card pad">${fld(`ranks.${i}.name`,"Nome",r.name)}${fld(`ranks.${i}.pts`,"Pontos necessários",r.pts,"number")}${isM()?`<button class="red" data-a="del" data-k="ranks" data-i="${i}">Remover</button>`:""}</div>`).join("")+`</div>`},
+ficha(){const ci=cur();if(ci<0)return "<p>Ficha não encontrada.</p>";const c=S.chars[ci],B=`chars.${ci}.`;
+ return `<div class="card pad fl" style="margin-bottom:16px"><div class="av" data-a="av" data-ci="${ci}" style="${c.avatar?`background-image:url(${c.avatar})`:""}">${c.avatar?"":"ENVIAR<br>FOTO"}</div>
+ ${fld(B+"name","Personagem",c.name)}${fld(B+"origin","Origem",c.origin)}${fld(B+"player","Jogador",c.player)}${fld(B+"cls","Classe",c.cls)}${fld(B+"talent","Talento Supremo",c.talent)}${fld(B+"quote","Frase marcante",c.quote)}
+ <label>Campanha<select data-p="${B}camp"><option value="">—</option>${S.camps.map(o=>`<option value="${o.id}" ${o.id===c.camp?"selected":""}>${esc(o.name)}</option>`).join("")}</select></label></div>
+ <div class="sheet"><div class="card pad"><div class="tal">${c.talent?"ULTIMATE "+esc(c.talent.toUpperCase()):"TALENTO SUPREMO ???"}</div><small style="color:var(--mu)">“${esc(c.quote)||"…"}”</small>
+ <div class="pent">${c.attrs.map((a,i)=>`<div class="a" style="${pos(i)}"><input data-p="${B}attrs.${i}.v" data-r="1" type="number" value="${a.v}"><input class="n" data-p="${B}attrs.${i}.n" data-r="1" value="${esc(a.n)}"></div>`).join("")}<div class="c">ATRIBUTOS</div></div>
+ ${c.vit.map((v,i)=>`<div class="vit"><div>${isM()?`<input data-p="${B}vit.${i}.n" value="${esc(v.n)}" style="text-align:center;background:none;border:0;width:120px;font:inherit;text-transform:uppercase">`:esc(v.n).toUpperCase()}</div>
+ <div class="vb" style="background:${bar(v.c,v.m,v.k)}">${[[-5,"«"],[-1,"‹"]].map(([d,t])=>`<button data-a="adj" data-ci="${ci}" data-i="${i}" data-d="${d}">${t}</button>`).join("")}<div class="m"><input type="number" data-p="${B}vit.${i}.c" data-r="1" value="${v.c}">/<input type="number" data-p="${B}vit.${i}.m" data-r="1" value="${v.m}"></div>${[[1,"›"],[5,"»"]].map(([d,t])=>`<button data-a="adj" data-ci="${ci}" data-i="${i}" data-d="${d}">${t}</button>`).join("")}</div></div>`).join("")}
+ ${isM()?`<button class="btn" data-a="addvit" data-ci="${ci}">+ Novo status</button>`:""}</div>
+ <div class="card pad"><h2>Perícias</h2><table><tr><th></th><th>Perícia</th><th>Atrib.</th><th>Treino</th><th>Outros</th><th>Total</th></tr>`+
+ c.skills.map((s,i)=>hit(s)?`<tr><td><button class="dice" data-a="rollsk" data-ci="${ci}" data-i="${i}">🎲</button></td><td><input data-p="${B}skills.${i}.n" value="${esc(s.n)}"></td><td><select data-p="${B}skills.${i}.a" data-num="1" data-r="1">${c.attrs.map((a,j)=>`<option value="${j}" ${j==s.a?"selected":""}>${esc(a.n)}</option>`).join("")}</select></td><td><input type="number" data-p="${B}skills.${i}.t" data-r="1" value="${s.t}"></td><td><input type="number" data-p="${B}skills.${i}.o" data-r="1" value="${s.o}"></td><td class="tr">+${tot(c,s)}</td></tr>`:"").join("")+`</table><div class="row" style="margin-top:8px"><button class="btn" data-a="addsk" data-ci="${ci}">+ Perícia</button></div></div>
+ <div class="card pad"><div class="tabs">${RT.map(([k,l])=>`<button class="${k===rt?"on":""}" data-a="rt" data-k="${k}">${l}</button>`).join("")}</div>${rtab(c,ci)}</div></div>`}};
+function render(){const h=location.hash.slice(1)||"agentes",pg=h.startsWith("ficha")?"ficha":h;
+ $("#nav").innerHTML=["agentes","campanhas","ameacas","homebrew","patente"].map(k=>`<a href="#${k}" class="${k===pg||(pg==="ficha"&&k==="agentes")?"on":""}">${{ameacas:"Ameaças",homebrew:"Homebrew"}[k]||k[0].toUpperCase()+k.slice(1)}</a>`).join("");
+ $("#app").innerHTML=(["agentes","campanhas","ameacas","homebrew","patente"].includes(pg)?`<input id="q" placeholder="🔍 Buscar…" value="${esc(q)}" style="width:100%;margin-bottom:14px;padding:10px">`:"")+(P[pg]||P.agentes)();
+ const qi=$("#q");if(qi){qi.oninput=()=>{q=qi.value;const p=qi.selectionStart;render();const n=$("#q");n.focus();n.setSelectionRange(p,p)}}}
+const ACT={
+rt:e=>{rt=e.k;render()},newc:()=>{if(S.chars.length>=15)return;const c=NC();S.chars.push(c);location.hash="ficha-"+c.id},
+delc:e=>{if(confirm("Excluir este agente?")){S.chars.splice(+e.i,1);render()}},
+newcamp:()=>{const n=prompt("Nome da campanha:");if(n){S.camps.push({id:uid(),name:n,date:new Date().toLocaleDateString("pt-BR"),role:"Mestre"});render()}},
+add:e=>{S.chars[e.ci][e.k].push({});render()},del:e=>{S[e.k].splice(+e.i,1);render()},
+fav:e=>{const o=S.chars[e.ci][e.k][e.i];o.fav=!o.fav;render()},
+addsk:e=>{S.chars[e.ci].skills.push({n:"Nova perícia",a:0,t:0,o:0});render()},
+addvit:e=>{S.chars[e.ci].vit.push({n:"Corrupção",c:0,m:10,k:"#9b5cff"});render()},
+adj:e=>{const v=S.chars[e.ci].vit[e.i];v.c=Math.max(0,Math.min(v.m,v.c+ +e.d));render()},
+addth:()=>{S.threats.push({name:"Nova ameaça"});render()},addrank:()=>{S.ranks.push({name:"Nova",pts:0});render()},
+addc:()=>{S.combat.push({n:"Novo",c:50,m:50,ini:0});render()},next:()=>{S.turn++;render()},
+addcloud:()=>{const n=$("#cn").value.trim();if(n){S.home.push({t:$("#ct").value,n,d:$("#cd").value});render()}},
+take:e=>{const o=S.home[e.i],c=S.chars[cur()>=0?cur():0];if(o.t==="Poder")c.powers.push({name:o.n,desc:o.d});else if(o.t==="Item")c.inv.push({name:o.n,desc:o.d,qty:1});else if(o.t==="Perícia")c.skills.push({n:o.n,a:0,t:0,o:0});else c.cls=o.n;beep(880);alert("Adicionado a "+c.name)},
+roll:e=>{const d=e.d==="c"?+$("#cs").value:+e.d;if(!d||d<2)return;const r=Math.ceil(Math.random()*d),c=S.chars[cur()];S.rolls.unshift(`${c?.name||"Anônimo"} rolou D${d}: ${r}${r===d?" ★":""}`);S.rolls=S.rolls.slice(0,50);rt="combate";render()},
+rollsk:e=>{const c=S.chars[e.ci],s=c.skills[e.i],r=Math.ceil(Math.random()*20),t=tot(c,s);S.rolls.unshift(`${c.name} rolou ${s.n}: D20(${r}) + ${t} = ${r+t}`);rt="combate";render()},
+av:e=>{const f=document.createElement("input");f.type="file";f.accept="image/*";f.onchange=()=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement("canvas"),k=Math.min(1,400/im.width);c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);S.chars[e.ci].avatar=c.toDataURL("image/jpeg",.8);save();render()};im.src=r.result};r.readAsDataURL(f.files[0])};f.click()}};
+document.addEventListener("click",ev=>{const b=ev.target.closest("[data-a]");if(!b)return;if(b.dataset.a==="fav")ev.preventDefault();beep();ACT[b.dataset.a]?.(b.dataset);if(b.dataset.a!=="rt")save()});
+document.addEventListener("input",ev=>{const t=ev.target,p=t.dataset.p;if(!p)return;setP(p,t.type==="number"||t.dataset.num?+t.value:t.value);save()});
+document.addEventListener("change",ev=>{const t=ev.target;if(t.dataset.r||t.dataset.p?.startsWith("chars")&&t.tagName==="SELECT")render()});
+window.onhashchange=render;$("#role").onchange=()=>{beep(440);render()};
+$("#snd").onclick=()=>{snd=!snd;$("#snd").textContent=snd?"🔊":"🔇";beep()};
+$("#ver").onclick=()=>{snap();save();const v=S.versions,i=prompt("Versões salvas (digite o número para restaurar):\n"+v.map((x,j)=>`${j+1}) ${x.t}`).join("\n")),o=v[(+i||0)-1];if(o){const keep=S.versions;S=Object.assign(S,JSON.parse(o.d),{versions:keep});save();render()}};
+render();
+</script></body></html>

@@ -9,7 +9,7 @@ Sem regras presas a um sistema específico: atributos, status, perícias, podere
 | Área | O que faz |
 |---|---|
 | **ID Cards** | Lista de ID Cards (fichas) com foto, Talento Supremo, classe e busca |
-| **Ficha** | Dados básicos, pentágono de 5 atributos editáveis e barras de status (HP, Stamina, Mental) com botões «‹›» |
+| **Ficha** | Dados básicos, hexágono de 6 atributos (CRI, MAN, COM, PER, INT, PRE) editáveis e barras de status (HP, Stamina, Mental) com botões «‹›» |
 | **Perícias** | Atributo relacionado, treino, bônus e rolagem de D20 com um clique |
 | **Habilidades, Rituais, Inventário** | Listas em sanfona; o botão “Adicionar da Biblioteca” copia o que o Mestre cadastrou |
 | **Biblioteca (só Mestre)** | Cadastro de habilidades, rituais e itens disponíveis para todas as fichas |

@@ -125,9 +125,9 @@ ficha(){const ci=cur();if(ci<0)return "<p>Ficha não encontrada.</p>";const c=S.
  <div class="card pad"><h2>Perícias</h2><table><tr><th></th><th>Perícia</th><th>Atrib.</th><th>Treino</th><th>Outros</th><th>Total</th></tr>`+
  c.skills.map((s,i)=>hit(s)?`<tr><td><button class="dice" data-a="rollsk" data-ci="${ci}" data-i="${i}">🎲</button></td><td><input data-p="${B}skills.${i}.n" value="${esc(s.n)}"></td><td><select data-p="${B}skills.${i}.a" data-num="1" data-r="1">${c.attrs.map((a,j)=>`<option value="${j}" ${j==s.a?"selected":""}>${esc(a.n)}</option>`).join("")}</select></td><td><input type="number" data-p="${B}skills.${i}.t" data-r="1" value="${s.t}"></td><td><input type="number" data-p="${B}skills.${i}.o" data-r="1" value="${s.o}"></td><td class="tr">+${tot(c,s)}</td></tr>`:"").join("")+`</table><div class="row" style="margin-top:8px"><button class="btn" data-a="addsk" data-ci="${ci}">+ Perícia</button></div></div>
  <div class="card pad"><div class="tabs">${RT.map(([k,l])=>`<button class="${k===rt?"on":""}" data-a="rt" data-k="${k}">${l}</button>`).join("")}</div>${rtab(c,ci)}</div></div>`}};
-function render(){const h=location.hash.slice(1)||"agentes",pg=h.startsWith("ficha")?"ficha":h;
- $("#nav").innerHTML=["agentes","campanhas","ameacas","homebrew","patente"].map(k=>`<a href="#${k}" class="${k===pg||(pg==="ficha"&&k==="agentes")?"on":""}">${{ameacas:"Ameaças",homebrew:"Homebrew"}[k]||k[0].toUpperCase()+k.slice(1)}</a>`).join("");
- $("#app").innerHTML=(["agentes","campanhas","ameacas","homebrew","patente"].includes(pg)?`<input id="q" placeholder="🔍 Buscar…" value="${esc(q)}" style="width:100%;margin-bottom:14px;padding:10px">`:"")+(P[pg]||P.agentes)();
+function render(){const h=location.hash.slice(1)||"agentes",pg=h.startsWith("ficha")?"ficha":h;if(pg==="ameacas"&&!isM()){location.hash="agentes";return}const PG=["agentes","campanhas",...(isM()?["ameacas"]:[]),"patente"];
+ $("#nav").innerHTML=PG.map(k=>`<a href="#${k}" class="${k===pg||(pg==="ficha"&&k==="agentes")?"on":""}">${{ameacas:"Ameaças",homebrew:"Homebrew"}[k]||k[0].toUpperCase()+k.slice(1)}</a>`).join("");
+ $("#app").innerHTML=(PG.includes(pg)?`<input id="q" placeholder="🔍 Buscar…" value="${esc(q)}" style="width:100%;margin-bottom:14px;padding:10px">`:"")+(P[pg]||P.agentes)();
  const qi=$("#q");if(qi){qi.oninput=()=>{q=qi.value;const p=qi.selectionStart;render();const n=$("#q");n.focus();n.setSelectionRange(p,p)}}}
 const ACT={
 rt:e=>{rt=e.k;render()},newc:()=>{if(S.chars.length>=15)return;const c=NC();S.chars.push(c);location.hash="ficha-"+c.id},
@@ -152,7 +152,8 @@ window.onhashchange=render;$("#role").onchange=()=>{beep(440);render()};
 $("#snd").onclick=()=>{snd=!snd;$("#snd").textContent=snd?"🔊":"🔇";beep()};
 $("#ver").onclick=()=>{snap();save();const v=S.versions,i=prompt("Versões salvas (digite o número para restaurar):\n"+v.map((x,j)=>`${j+1}) ${x.t}`).join("\n")),o=v[(+i||0)-1];if(o){const keep=S.versions;S=Object.assign(S,JSON.parse(o.d),{versions:keep});save();render()}};
 const bg=document.createElement("div");bg.id="bg";document.body.prepend(bg);
-for(let i=0;i<18;i++){const m=document.createElement("div"),z=70+Math.random()*130;m.className="mk";
-m.style.cssText=`width:${z}px;height:${z}px;left:${Math.random()*100}%;top:${Math.random()*100}%;--dx:${(Math.random()-.5)*180}px;--dy:${(Math.random()-.5)*180}px;--r:${(Math.random()-.5)*50}deg;opacity:${.07+Math.random()*.1};animation-duration:${45+Math.random()*50}s;animation-delay:-${Math.random()*60}s`;bg.append(m)}
+let sd=20260;const rnd=()=>{sd=sd+0x6D2B79F5|0;let t=Math.imul(sd^sd>>>15,1|sd);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+for(let i=0;i<18;i++){const m=document.createElement("div"),z=70+rnd()*130;m.className="mk";
+m.style.cssText=`width:${z}px;height:${z}px;left:${rnd()*100}%;top:${rnd()*100}%;--dx:${(rnd()-.5)*180}px;--dy:${(rnd()-.5)*180}px;--r:${(rnd()-.5)*50}deg;opacity:${.07+rnd()*.1};animation-duration:${45+rnd()*50}s;animation-delay:-${rnd()*60}s`;bg.append(m)}
 render();
 </script></body></html>

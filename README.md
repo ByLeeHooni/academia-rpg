@@ -14,7 +14,7 @@ Sem regras presas a um sistema específico: atributos, status, perícias, podere
 | **Habilidades / Inventário** | Itens e poderes em sanfona, com categorias, custo, recarga, peso e favoritos |
 | **Combate** | Dados (D4–D20 e personalizado), histórico e ordem de turno |
 | **Investigação / Julgamento** | Pistas, evidências, suspeitos, argumentos e provas |
-| **Campanhas, Ameaças, Homebrew, Patente** | Gestão de campanhas, NPCs e monstros, Nuvem do Mestre e patentes |
+| **Campanhas, Ameaças, Homebrew, Patente** | Gestão de campanhas, NPCs e monstros, patentes |
 | **Permissões** | Mestre vê segredos e cria conteúdo; Jogador edita só a própria ficha |
 | **Qualidade de vida** | Salvamento automático, histórico de versões, busca, sons opcionais e layout responsivo |
 

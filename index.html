@@ -136,6 +136,17 @@ details.acc.new{animation:pop .4s}
 .vb button:hover{background:#ffffff22;box-shadow:none;color:#fff}
 .vb .m{font-size:15px;font-weight:600;letter-spacing:.05em;text-shadow:0 1px 3px #000}
 .vb .m input{color:#fff;font-size:15px;font-weight:600}
+#toasts{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:10px;z-index:40;align-items:flex-end;pointer-events:none;max-width:calc(100vw - 32px)}
+.toast{pointer-events:auto;display:flex;align-items:center;gap:14px;min-width:270px;background:#1c1c1c;border:1px solid #333;border-radius:6px;padding:12px 14px;box-shadow:0 10px 30px #000a;animation:tin .3s cubic-bezier(.2,.8,.2,1);transition:opacity .3s,transform .3s}
+.toast.out{opacity:0;transform:translateX(30px)}@keyframes tin{from{opacity:0;transform:translateX(40px)}}@keyframes tpop{from{transform:scale(.6);opacity:0}}
+.toast .hx{width:52px;height:52px;flex:none;background:#fff;clip-path:polygon(25% 3%,75% 3%,100% 50%,75% 97%,25% 97%,0 50%);display:grid;place-items:center;position:relative}
+.toast .hx:before{content:"";position:absolute;inset:3px;background:#0b0b0b;clip-path:polygon(25% 3%,75% 3%,100% 50%,75% 97%,25% 97%,0 50%)}
+.toast .hx span{position:relative;font:800 12px "Courier New",monospace;color:#fff}
+.toast .tb{flex:1;min-width:0}.toast .tt{font-weight:700;font-size:15px;color:#fff}
+.toast .tt em{font-style:normal;font-size:9px;letter-spacing:.1em;background:#fff;color:#000;padding:1px 6px;margin-left:8px;vertical-align:middle}
+.toast .ts{font-size:11px;color:var(--mu)}.toast .tr2{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-top:4px}
+.toast .tr2 small{color:var(--mu);font-weight:700}.toast .tr2 b{font-size:26px;color:#fff;animation:tpop .4s}
+.toast .tx{border:0;background:none;padding:2px 4px;color:var(--mu);align-self:flex-start}.toast .tx:hover{color:#fff;box-shadow:none}
 @media(prefers-reduced-motion:reduce){.mk{animation:none}}
 </style></head><body>
 <header><div class="logo">A.C.A.D.<small>FICHAS</small></div><nav id="nav"></nav>
@@ -175,14 +186,16 @@ const tot=(c,s)=>(c.attrs[s.a]?.v||0)+(+s.t||0)+(+s.o||0);
 const RT=[["combate","Confronto"],["powers","Talentos"],["rit","Evidências"],["inv","Itens"],["clues","Investigação"],["trial","Julgamento"],["desc","Perfil"]];
 const bar=(c,m,k)=>`linear-gradient(90deg,${k} ${m?Math.min(100,c/m*100):0}%,#0c0c0c 0)`;
 function rtab(c,ci){const P=`chars.${ci}.`;
- if(rt==="combate")return `<div class="row" style="margin-bottom:8px"><input id="ex" placeholder="Rolar dados (ex: 2d6+3)" style="flex:1"><button class="btn" data-a="rollx">🎲 Rolar</button></div>`+acc(P,"atk",ci)+`<div class="row" style="margin:8px 0">${[4,6,8,10,12,20].map(d=>`<button class="btn" data-a="roll" data-d="${d}">D${d}</button>`).join("")}<input id="cs" type="number" placeholder="Lados" style="width:70px"><button data-a="roll" data-d="c">Custom</button></div>
- <div class="log">${S.rolls.map(r=>`<div>${esc(r)}</div>`).join("")||"Sem rolagens."}</div><h2 style="margin-top:14px">Ordem de turno</h2><button class="btn" data-a="addc">+ Participante</button> <button data-a="next">Próximo ▶</button>`+
- S.combat.map((o,i)=>({o,i})).sort((x,y)=>(y.o.ini||0)-(x.o.ini||0)).map(({o,i},p,arr)=>`<details class="acc" ${p===S.turn%arr.length?"open":""}><summary>${p===S.turn%arr.length?"▶ ":""}${esc(o.n)} — HP ${o.c}/${o.m}</summary><div class="b">${fld(`combat.${i}.n`,"Nome",o.n)}<div class="row"><label>HP<input type="number" data-p="combat.${i}.c" data-r="1" value="${o.c}"></label><label>Máx<input type="number" data-p="combat.${i}.m" value="${o.m}"></label><label>Iniciativa<input type="number" data-p="combat.${i}.ini" value="${o.ini||0}"></label></div>${fld(`combat.${i}.st`,"Status negativos / ataques",o.st||"")}<button class="red" data-a="del" data-k="combat" data-i="${i}">Remover</button></div></details>`).join("");
+ if(rt==="combate")return `<div class="row" style="margin-bottom:8px"><input id="ex" placeholder="Rolar dados (ex: 2d6+3)" style="flex:1"><button class="btn" data-a="rollx">🎲 Rolar</button></div>`+acc(P,"atk",ci)+`<div class="row" style="margin:8px 0">${[4,6,8,10,12,20].map(d=>`<button class="btn" data-a="roll" data-d="${d}">D${d}</button>`).join("")}</div>`;
  if(rt==="inv")return `<div class="fl" style="margin-bottom:10px">${fld(P+"pp","Pontos de prestígio",c.pp,"number")}<label>Patente<select data-p="${P}rank"><option></option>${S.ranks.map(r=>`<option ${r.name===c.rank?"selected":""}>${esc(r.name)}</option>`).join("")}</select></label>${fld(P+"cred","Limite de crédito",c.cred??"")}${fld(P+"carga","Carga máx.",c.carga??"","number")}</div><div class="row" style="margin-bottom:8px"><small>NOVO:</small>${["Arma","Munição","Proteção","Geral","Item Amaldiçoado"].map(x=>`<button data-a="addcat" data-ci="${ci}" data-c="${x}">${x}</button>`).join("")}</div>`+acc(P,"inv",ci);
  if(rt==="desc")return [["notes","Anotações"],["look","Aparência"],["pers","Personalidade"],["hist","Histórico"],["obj","Objetivo"]].map(([k,l])=>fld(P+k,l,c[k]??"","a")).join("")+(isM()?`<h2 style="margin-top:12px">Arquivo confidencial</h2>`+[["pers","Personalidade"],["obj","Objetivos"],["fear","Medos"],["secr","Segredos"],["trau","Traumas"],["rel","Relacionamentos"]].map(([k,l])=>`<div class="sec">${fld(P+"sec."+k,l,c.sec[k]||"","a")}</div>`).join(""):`<p style="color:var(--mu)">🔒 Informações ocultas: só o Mestre vê.</p>`);
  return (rt==="rit"?`<div class="fl" style="margin-bottom:8px">${fld(P+"cp","Crédito de Pistas",c.cp??0,"number")}</div>`:"")+acc(P,rt,ci)}
 const arr=(ci,k)=>ci==="lib"?S.lib[k]:(S.chars[ci][k]=S.chars[ci][k]||[]);
-const rx=t=>{const m=t.replace(/\s/g,"").match(/^(\d*)d(\d+)([+-]\d+)?$/i);if(!m)return null;const n=+m[1]||1,d=+m[2],k=+(m[3]||0),r=Array.from({length:n},()=>Math.ceil(Math.random()*d));return `${r.join("+")}${k?(k>0?"+":"")+k:""} = ${r.reduce((a,b)=>a+b,0)+k}`};
+const toast=(title,sub,rolls,mod,total,ico,tag)=>{let box=$("#toasts");if(!box){box=document.createElement("div");box.id="toasts";document.body.append(box)}
+ const el=document.createElement("div");el.className="toast";
+ el.innerHTML=`<div class="hx"><span>${esc(ico||"")}</span></div><div class="tb"><div class="tt">${esc(title)}${tag?`<em>${esc(tag)}</em>`:""}</div><div class="ts">${esc(sub||"")}</div>${total!=null?`<div class="tr2"><small>${esc(`[${rolls.join(", ")}]`+(mod?(mod>0?" + ":" − ")+Math.abs(mod):""))}</small><b>= ${total}</b></div>`:""}</div><button class="tx" aria-label="Fechar">✕</button>`;
+ const close=()=>{el.classList.add("out");setTimeout(()=>el.remove(),300)};el.querySelector(".tx").onclick=close;box.append(el);while(box.children.length>4)box.firstChild.remove();setTimeout(close,5000)};
+const rx=t=>{const m=t.replace(/\s/g,"").match(/^(\d*)d(\d+)([+-]\d+)?$/i);if(!m)return null;const n=Math.min(+m[1]||1,50),d=+m[2],k=+(m[3]||0),r=Array.from({length:n},()=>Math.ceil(Math.random()*d)),tot=r.reduce((a,b)=>a+b,0)+k;return{r,k,tot,d,txt:`${r.join("+")}${k?(k>0?"+":"")+k:""} = ${tot}`}};
 const modal=()=>{const L=LISTS[mod.k],all=S.lib[mod.k],cats=[...new Set(all.map(o=>o.cat).filter(Boolean))],mine=arr(mod.ci,mod.k),l=all.filter(o=>(!mod.cat||o.cat===mod.cat)&&(!mod.q||JSON.stringify(o).toLowerCase().includes(mod.q.toLowerCase())));
  return `<div style="position:fixed;inset:0;background:#000c;z-index:20;display:grid;place-items:center;padding:12px"><div class="card pad" style="width:min(760px,100%);max-height:88vh;overflow:auto"><div class="row" style="justify-content:space-between"><h2 style="margin:0">Adicionar ${L.t}</h2><button data-a="close">✕</button></div>
  <div class="tabs" style="margin-top:8px"><button class="${mod.cat?"":"on"}" data-a="mcat" data-v="">Todas</button>${cats.map(c=>`<button class="${mod.cat===c?"on":""}" data-a="mcat" data-v="${esc(c)}">${esc(c)}</button>`).join("")}</div>
@@ -245,8 +258,8 @@ aed:()=>{aed=!aed;render()},trn:e=>{S.chars[e.ci].skills[e.i].t=+e.v;render()},
 lt:e=>{lt=e.k;render()},open:e=>{mod={k:e.k,ci:e.ci,cat:"",q:""};render()},close:()=>{mod=null;render()},mcat:e=>{mod.cat=e.v;render()},
 mtake:e=>{const o=S.lib[mod.k].find(x=>x.id===e.id);if(o)arr(mod.ci,mod.k).push({...o,id:uid()});render()},
 addcat:e=>{fresh=1;arr(e.ci,"inv").push({cat:e.c,name:"Novo item",qty:1});render()},
-rollx:()=>{const c=S.chars[cur()],t=$("#ex").value,r=rx(t);if(!r)return alert("Use o formato 2d6+3");rolled=1;S.rolls.unshift(`${c.name} rolou ${t}: ${r}`);render()},
-rollatk:e=>{const c=S.chars[e.ci],a=arr(e.ci,"atk")[e.i],t=Math.ceil(Math.random()*20),b=+a.bonus||0;rolled=1;S.rolls.unshift(`${c.name} atacou com ${a.name}: D20(${t})+${b} = ${t+b}${t>=(+a.crit||20)?" ★ CRÍTICO":""} | Dano ${rx(a.dmg||"")||a.dmg||"-"}`);rt="combate";render()},
+rollx:()=>{const c=S.chars[cur()],t=$("#ex").value,r=rx(t);if(!r)return toast("Formato inválido","Use o formato 2d6+3");toast(t.replace(/\s/g,"").toUpperCase(),c?.name,r.r,r.k,r.tot,(r.r.length>1?r.r.length:"")+"D"+r.d)},
+rollatk:e=>{const c=S.chars[e.ci],a=arr(e.ci,"atk")[e.i],t=Math.ceil(Math.random()*20),b=+a.bonus||0,dm=rx(a.dmg||"");toast(a.name||"Ataque",`${c.name} · Dano ${dm?dm.txt:a.dmg||"-"}`,[t],b,t+b,"D20",t>=(+a.crit||20)?"CRÍTICO":"")},
 ct:e=>{tabanim=1;ct=e.k;render()},fmt:e=>document.execCommand(e.c),
 shield:e=>{fsh=e.v==="1";$("#sh0").style.opacity=fsh?.4:1;$("#sh1").style.opacity=fsh?1:.4},
 savecamp:e=>{const n=$("#fn").value.trim();if(!n)return;const d=clean($("#fd").innerHTML),i=+e.i;if(i>=0)Object.assign(S.camps[i],{name:n,desc:d,shield:fsh});else S.camps.push({id:uid(),name:n,desc:d,shield:fsh,date:new Date().toLocaleDateString("pt-BR"),role:"Mestre",players:[],combats:[],notes:""});location.hash="campanhas"},
@@ -270,8 +283,8 @@ addth:()=>{S.threats.push({name:"Nova ameaça"});render()},addrank:()=>{S.ranks.
 addc:()=>{S.combat.push({n:"Novo",c:50,m:50,ini:0});render()},next:()=>{S.turn++;render()},
 addcloud:()=>{const n=$("#cn").value.trim();if(n){S.home.push({t:$("#ct").value,n,d:$("#cd").value});render()}},
 take:e=>{const o=S.home[e.i],c=S.chars[cur()>=0?cur():0];if(o.t==="Poder")c.powers.push({name:o.n,desc:o.d});else if(o.t==="Item")c.inv.push({name:o.n,desc:o.d,qty:1});else if(o.t==="Perícia")c.skills.push({n:o.n,a:0,t:0,o:0});else c.cls=o.n;beep(880);alert("Adicionado a "+c.name)},
-roll:e=>{const d=e.d==="c"?+$("#cs").value:+e.d;if(!d||d<2)return;const r=Math.ceil(Math.random()*d),c=S.chars[cur()];rolled=1;S.rolls.unshift(`${c?.name||"Anônimo"} rolou D${d}: ${r}${r===d?" ★":""}`);S.rolls=S.rolls.slice(0,50);rt="combate";render()},
-rollsk:e=>{const c=S.chars[e.ci],s=c.skills[e.i],r=Math.ceil(Math.random()*20),t=tot(c,s);rolled=1;S.rolls.unshift(`${c.name} rolou ${s.n}: D20(${r}) + ${t} = ${r+t}`);rt="combate";render()},
+roll:e=>{const d=+e.d;if(!d||d<2)return;const r=Math.ceil(Math.random()*d),c=S.chars[cur()];toast("D"+d,c?.name,[r],0,r,"D"+d,r===d?"MÁXIMO":"")},
+rollsk:e=>{const c=S.chars[e.ci],s=c.skills[e.i],r=Math.ceil(Math.random()*20),t=tot(c,s);toast(s.n,c.name,[r],t,r+t,"D20",r===20?"20 NATURAL":r===1?"FALHA":"")},
 av:e=>{const f=document.createElement("input");f.type="file";f.accept="image/*";f.onchange=()=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement("canvas"),k=Math.min(1,400/im.width);c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);S.chars[e.ci].avatar=c.toDataURL("image/jpeg",.8);save();render()};im.src=r.result};r.readAsDataURL(f.files[0])};f.click()}};
 document.addEventListener("click",ev=>{const b=ev.target.closest("[data-a]");if(!b)return;if(/^(fav|rollatk)$/.test(b.dataset.a))ev.preventDefault();beep();ACT[b.dataset.a]?.(b.dataset);if(b.dataset.a!=="rt")save()});
 document.addEventListener("input",ev=>{const t=ev.target,p=t.dataset.p;if(!p)return;setP(p,t.type==="number"||t.dataset.num?+t.value:t.value);save()});

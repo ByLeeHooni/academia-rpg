@@ -113,6 +113,24 @@ th{padding-bottom:6px;letter-spacing:.08em}tr:hover td{background:#ffffff08}
 .seg button:hover{box-shadow:none;background:#222;color:#fff}.seg button.on,.seg button.on:hover{background:#fff;color:#000;font-weight:700}
 td select{appearance:none;-webkit-appearance:none;text-align:center;text-align-last:center;padding:2px;font-size:12px;cursor:pointer}
 input[type=number]{-moz-appearance:textfield}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}
+/* animações */
+.vb{position:relative;background:#000}
+.vb>i{position:absolute;left:0;top:0;bottom:0;width:0}
+.vb>.fi{transition:width .35s cubic-bezier(.2,.8,.2,1),background .3s}
+.vb>.gh{background:#fff;opacity:.4;transition:width .9s ease-out .35s}
+.vb.nt>i{transition:none!important}
+.vb>*:not(i){position:relative;z-index:1}
+.vb.hit{animation:hit .4s}.vb.heal{animation:heal .7s}
+@keyframes hit{0%,100%{transform:none}15%{transform:translateX(-5px)}35%{transform:translateX(5px)}55%{transform:translateX(-3px)}75%{transform:translateX(2px)}}
+@keyframes heal{0%{filter:brightness(2)}100%{filter:none}}
+@keyframes pop{from{opacity:0;transform:translateY(-6px) scale(.97)}}
+details.acc.new{animation:pop .4s}
+.log div.flash{animation:flash .8s}
+@keyframes flash{0%{background:#ffffff40;transform:translateX(-8px)}100%{background:transparent;transform:none}}
+.btn,.seg button{transition:transform .12s,background .2s,color .2s}.btn:active,.seg button:active{transform:scale(.95)}
+.dice{transition:transform .35s}.dice:active{transform:rotate(240deg) scale(1.2)}
+.pent .a{transition:transform .2s,filter .2s}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
 @media(prefers-reduced-motion:reduce){.mk{animation:none}}
 </style></head><body>
 <header><div class="logo">A.C.A.D.<small>FICHAS</small></div><nav id="nav"></nav>
@@ -132,7 +150,7 @@ S.lib=S.lib||{powers:[{name:"Contra-argumento",cat:"Julgamento",cost:"5 Concentr
 for(const k in S.lib)S.lib[k].forEach(o=>o.id=o.id||uid());
 S.chars.forEach(c=>{if(c.attrs&&c.attrs.map(a=>a.n).join()==="AGI,FOR,INT,PRE,VIG"){const o={},old=c.attrs.map(a=>a.n);c.attrs.forEach(a=>o[a.n]=a.v);c.attrs=ATTRS.map(([n,f])=>({n,f,v:o[n]??1}));(c.skills||[]).forEach(s=>{const j=c.attrs.findIndex(a=>a.n===old[s.a]);s.a=SK[s.n]??(j>=0?j:0)})}});
 S.chars.forEach(c=>{if(c.quote==="A verdade sempre vem à tona.")c.quote="";(c.vit||[]).forEach(v=>{if(v.n==="Stamina")v.n="Concentração";if(v.n==="Mental")v.n="Esperança"});const RN={"Persuasão":"Argumentação","Combate":"Lógica","Percepção":"Atenção","Tecnologia":"Eletrônicos","Medicina":"Autópsia","Intimidação":"Pressão"};(c.skills||[]).forEach(k=>{if(RN[k.n]){k.n=RN[k.n];k.a=SK[k.n]??k.a}})});
-let aed=false,lk="",mod=null,lt="powers",ct="idc",fsh=false,rt="powers",snd=false,cnt=0,tm,q="";
+let fresh=0,rolled=0,tabanim=0,aed=false,lk="",mod=null,lt="powers",ct="idc",fsh=false,rt="powers",snd=false,cnt=0,tm,q="";
 const isM=()=>$("#role").value==="m",hit=o=>!q||JSON.stringify(o).toLowerCase().includes(q.toLowerCase());
 const save=()=>{clearTimeout(tm);$("#sv").textContent="salvando…";tm=setTimeout(()=>{try{localStorage.setItem("acad2",JSON.stringify(S))}catch(e){}if(++cnt%15===0)snap();$("#sv").textContent="salvo ✓"},400)};
 const snap=()=>{S.versions.unshift({t:new Date().toLocaleString("pt-BR"),d:JSON.stringify(Object.assign({},S,{versions:[]}))});S.versions=S.versions.slice(0,10)};
@@ -197,14 +215,22 @@ ficha(){const ci=cur();if(ci<0)return "<p>Ficha não encontrada.</p>";const c=S.
  <div class="sheet"><div class="card pad" style="position:relative"><button class="pen${aed?" on":""}" data-a="aed" title="Editar atributos"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.1 2.1 0 013 3L7 19l-4 1 1-4z"/></svg></button><div class="tal">${c.talent?"ULTIMATE "+esc(c.talent.toUpperCase()):"TALENTO SUPREMO ???"}</div>
  <div class="pent"><svg class="sp" viewBox="0 0 300 300">${c.attrs.map((_,i)=>`<line x1="150" y1="150" x2="${pxy(i)[0]}" y2="${pxy(i)[1]}"/>`).join("")}<polygon points="${c.attrs.map((_,i)=>pxy(i).join(",")).join(" ")}"/></svg>${c.attrs.map((a,i)=>`<div class="a" title="${esc(a.f||"")}" style="${pos(i)}">${aed?`<input data-p="${B}attrs.${i}.v" data-r="1" type="number" value="${a.v}"><input class="n" data-p="${B}attrs.${i}.n" data-r="1" value="${esc(a.n)}">`:`<b class="nv">${a.v}</b><span class="n">${esc(a.n)}</span>`}</div>`).join("")}<div class="c">ATRIBUTOS</div></div><div style="font-size:10px;color:var(--mu);text-align:center;margin-bottom:8px">${c.attrs.map(a=>`${esc(a.n)} ${esc(a.f||"")}`).join(" · ")}</div>
  ${c.vit.map((v,i)=>`<div class="vit"><div>${isM()?`<input data-p="${B}vit.${i}.n" value="${esc(v.n)}" style="text-align:center;background:none;border:0;width:120px;font:inherit;text-transform:uppercase">`:esc(v.n).toUpperCase()}</div>
- <div class="vb" style="background:${bar(v.c,v.m,["#6e6e6e","#4f4f4f","#8c8c8c"][i%3])}">${[[-5,"«"],[-1,"‹"]].map(([d,t])=>`<button data-a="adj" data-ci="${ci}" data-i="${i}" data-d="${d}">${t}</button>`).join("")}<div class="m"><input type="number" data-p="${B}vit.${i}.c" data-r="1" value="${v.c}">/<input type="number" data-p="${B}vit.${i}.m" data-r="1" value="${v.m}"></div>${[[1,"›"],[5,"»"]].map(([d,t])=>`<button data-a="adj" data-ci="${ci}" data-i="${i}" data-d="${d}">${t}</button>`).join("")}</div></div>`).join("")}
+ <div class="vb" data-bk="v${ci}-${i}" data-pc="${v.m?Math.min(100,Math.max(0,v.c/v.m*100)):0}" data-val="${v.c}"><i class="gh" style="width:${v.m?Math.min(100,Math.max(0,v.c/v.m*100)):0}%"></i><i class="fi" style="width:${v.m?Math.min(100,Math.max(0,v.c/v.m*100)):0}%;background:${["#6e6e6e","#4f4f4f","#8c8c8c"][i%3]}"></i>${[[-5,"«"],[-1,"‹"]].map(([d,t])=>`<button data-a="adj" data-ci="${ci}" data-i="${i}" data-d="${d}">${t}</button>`).join("")}<div class="m"><input type="number" data-p="${B}vit.${i}.c" data-r="1" value="${v.c}">/<input type="number" data-p="${B}vit.${i}.m" data-r="1" value="${v.m}"></div>${[[1,"›"],[5,"»"]].map(([d,t])=>`<button data-a="adj" data-ci="${ci}" data-i="${i}" data-d="${d}">${t}</button>`).join("")}</div></div>`).join("")}
  ${isM()?`<button class="btn" data-a="addvit" data-ci="${ci}">+ Novo status</button>`:""}<div class="fl" style="margin-top:12px">${fld(B+"lvl","Nível",c.lvl??"")}${fld(B+"pet","Energia/turno",c.pet??"")}${fld(B+"desl","Deslocamento",c.desl??"")}</div>
  <div class="fl" style="margin-top:8px"><div style="text-align:center"><div style="font:800 28px 'Courier New',monospace;border:2px solid #fff;padding:2px 10px">${10+(c.attrs[2]?.v||0)+(+c.eq||0)+(+c.ou||0)}</div><small style="color:var(--mu)">DEFESA</small></div><label>Equip.<input type="number" data-p="${B}eq" data-r="1" value="${c.eq??0}"></label><label>Outros<input type="number" data-p="${B}ou" data-r="1" value="${c.ou??0}"></label>${fld(B+"blq","Bloqueio",c.blq??"")}${fld(B+"esq","Esquiva",c.esq??"")}</div>
  <div class="fl" style="margin-top:8px">${fld(B+"prot","Proteção",c.prot??"")}${fld(B+"res","Resistências",c.res??"")}${fld(B+"prof","Proficiências",c.prof??"")}</div></div>
  <div class="card pad"><h2>Perícias</h2><table><tr><th></th><th>Perícia</th><th>Atrib.</th><th>Treino</th><th>Outros</th><th>Total</th></tr>`+
  c.skills.map((s,i)=>hit(s)?`<tr><td><button class="dice" data-a="rollsk" data-ci="${ci}" data-i="${i}">🎲</button></td><td><input data-p="${B}skills.${i}.n" value="${esc(s.n)}"></td><td><select data-p="${B}skills.${i}.a" data-num="1" data-r="1">${c.attrs.map((a,j)=>`<option value="${j}" ${j==s.a?"selected":""}>${esc(a.n)}</option>`).join("")}</select></td><td><div class="seg">${[0,5,10,15].map(v=>`<button data-a="trn" data-ci="${ci}" data-i="${i}" data-v="${v}" class="${v==s.t?"on":""}">${v}</button>`).join("")}</div></td><td><input type="number" data-p="${B}skills.${i}.o" data-r="1" value="${s.o}"></td><td class="tr">+${tot(c,s)}</td></tr>`:"").join("")+`</table><div class="row" style="margin-top:8px"><button class="btn" data-a="addsk" data-ci="${ci}">+ Perícia</button></div></div>
  <div class="card pad"><div style="margin-bottom:8px;color:var(--mu)">Campanha: <b style="color:#fff">${esc(S.camps.find(o=>o.id===c.camp)?.name||"—")}</b></div><div class="tabs">${RT.map(([k,l])=>`<button class="${k===rt?"on":""}" data-a="rt" data-k="${k}">${l}</button>`).join("")}</div>${rtab(c,ci)}</div></div>`}};
-function render(){const key=location.hash+rt+ct+lt+(mod?mod.k+mod.cat:""),op=key===lk?[...document.querySelectorAll("#app details")].map(d=>d.open):[],sy=scrollY;lk=key;render0();document.querySelectorAll("#app details").forEach((d,i)=>{if(op[i])d.open=true});scrollTo(0,sy)}
+function render(){const key=location.hash+rt+ct+lt+(mod?mod.k+mod.cat:""),op=key===lk?[...document.querySelectorAll("#app details")].map(d=>d.open):[],sy=scrollY;lk=key;const pv={};document.querySelectorAll("#app .vb[data-bk]").forEach(e=>pv[e.dataset.bk]={pc:+e.dataset.pc,v:+e.dataset.val});render0();document.querySelectorAll("#app details").forEach((d,i)=>{if(op[i])d.open=true});scrollTo(0,sy);fx(pv)}
+function fx(pv){
+ document.querySelectorAll("#app .vb[data-bk]").forEach(e=>{const o=pv[e.dataset.bk];if(!o)return;const pc=+e.dataset.pc,v=+e.dataset.val;if(o.pc===pc&&o.v===v)return;
+  const bs=[...e.children].filter(x=>x.tagName==="I");e.classList.add("nt");bs.forEach(b=>b.style.width=o.pc+"%");void e.offsetWidth;e.classList.remove("nt");bs.forEach(b=>b.style.width=pc+"%");
+  if(v!==o.v)e.classList.add(v<o.v?"hit":"heal");
+  const i=e.querySelector(".m input");if(i){const t0=performance.now(),f=t=>{const k=Math.min(1,(t-t0)/450);i.value=Math.round(o.v+(v-o.v)*k);if(k<1)requestAnimationFrame(f)};requestAnimationFrame(f)}});
+ if(fresh){const l=[...document.querySelectorAll("#app details.acc")].pop();if(l)l.classList.add("new");fresh=0}
+ if(rolled){const l=document.querySelector("#app .log div");if(l)l.classList.add("flash");rolled=0}
+ if(tabanim){document.querySelectorAll("#app .tabs ~ *").forEach(e=>e.style.animation="in .3s");tabanim=0}}
 function render0(){const h=location.hash.slice(1)||"agentes",pg=h.startsWith("ficha")?"ficha":h.startsWith("campanha-")?"campanha":h.startsWith("editar-")||h==="nova-campanha"?"form":h;if(/^(ameacas|biblioteca)$/.test(pg)&&!isM()){location.hash="agentes";return}const PG=["agentes","campanhas",...(isM()?["ameacas","biblioteca"]:[]),"patente"];
  $("#nav").innerHTML=PG.map(k=>`<a href="#${k}" class="${k===pg||(pg==="ficha"&&k==="agentes")||(/^(campanha|form)$/.test(pg)&&k==="campanhas")?"on":""}">${{agentes:"ID Cards",ameacas:"Ameaças",biblioteca:"Biblioteca"}[k]||k[0].toUpperCase()+k.slice(1)}</a>`).join("");
  $("#app").innerHTML=(PG.includes(pg)?`<input id="q" placeholder="🔍 Buscar…" value="${esc(q)}" style="width:100%;margin-bottom:14px;padding:10px">`:"")+(P[pg]||P.agentes)()+(mod?modal():"");const mq=$("#mq");if(mq)mq.oninput=()=>{mod.q=mq.value;const p=mq.selectionStart;render();const n=$("#mq");n.focus();n.setSelectionRange(p,p)};
@@ -213,10 +239,10 @@ const ACT={
 aed:()=>{aed=!aed;render()},trn:e=>{S.chars[e.ci].skills[e.i].t=+e.v;render()},
 lt:e=>{lt=e.k;render()},open:e=>{mod={k:e.k,ci:e.ci,cat:"",q:""};render()},close:()=>{mod=null;render()},mcat:e=>{mod.cat=e.v;render()},
 mtake:e=>{const o=S.lib[mod.k].find(x=>x.id===e.id);if(o)arr(mod.ci,mod.k).push({...o,id:uid()});render()},
-addcat:e=>{arr(e.ci,"inv").push({cat:e.c,name:"Novo item",qty:1});render()},
-rollx:()=>{const c=S.chars[cur()],t=$("#ex").value,r=rx(t);if(!r)return alert("Use o formato 2d6+3");S.rolls.unshift(`${c.name} rolou ${t}: ${r}`);render()},
-rollatk:e=>{const c=S.chars[e.ci],a=arr(e.ci,"atk")[e.i],t=Math.ceil(Math.random()*20),b=+a.bonus||0;S.rolls.unshift(`${c.name} atacou com ${a.name}: D20(${t})+${b} = ${t+b}${t>=(+a.crit||20)?" ★ CRÍTICO":""} | Dano ${rx(a.dmg||"")||a.dmg||"-"}`);rt="combate";render()},
-ct:e=>{ct=e.k;render()},fmt:e=>document.execCommand(e.c),
+addcat:e=>{fresh=1;arr(e.ci,"inv").push({cat:e.c,name:"Novo item",qty:1});render()},
+rollx:()=>{const c=S.chars[cur()],t=$("#ex").value,r=rx(t);if(!r)return alert("Use o formato 2d6+3");rolled=1;S.rolls.unshift(`${c.name} rolou ${t}: ${r}`);render()},
+rollatk:e=>{const c=S.chars[e.ci],a=arr(e.ci,"atk")[e.i],t=Math.ceil(Math.random()*20),b=+a.bonus||0;rolled=1;S.rolls.unshift(`${c.name} atacou com ${a.name}: D20(${t})+${b} = ${t+b}${t>=(+a.crit||20)?" ★ CRÍTICO":""} | Dano ${rx(a.dmg||"")||a.dmg||"-"}`);rt="combate";render()},
+ct:e=>{tabanim=1;ct=e.k;render()},fmt:e=>document.execCommand(e.c),
 shield:e=>{fsh=e.v==="1";$("#sh0").style.opacity=fsh?.4:1;$("#sh1").style.opacity=fsh?1:.4},
 savecamp:e=>{const n=$("#fn").value.trim();if(!n)return;const d=clean($("#fd").innerHTML),i=+e.i;if(i>=0)Object.assign(S.camps[i],{name:n,desc:d,shield:fsh});else S.camps.push({id:uid(),name:n,desc:d,shield:fsh,date:new Date().toLocaleDateString("pt-BR"),role:"Mestre",players:[],combats:[],notes:""});location.hash="campanhas"},
 delcamp:e=>{if(confirm("Excluir esta campanha?")){const id=S.camps[+e.i].id;S.chars.forEach(c=>{if(c.camp===id)c.camp=""});S.camps.splice(+e.i,1);location.hash="campanhas"}},
@@ -227,10 +253,10 @@ addpart:e=>{S.camps[e.i].combats[e.k].parts.push({n:"Novo",c:50,ini:0});render()
 rmcmb:e=>{S.camps[e.i].combats.splice(+e.k,1);render()},rmp:e=>{S.camps[e.i].players.splice(+e.j,1);render()},
 addcamp:e=>{const c=S.chars.find(x=>x.id===$("#addc").value);if(c){c.camp=S.camps[e.i].id;render()}},
 rmcamp:e=>{const c=S.chars.find(x=>x.id===e.id);if(c){c.camp="";render()}},
-rt:e=>{rt=e.k;render()},newc:()=>{if(S.chars.length>=15)return;const c=NC();c.player=S.me||"";S.chars.push(c);location.hash="ficha-"+c.id},
+rt:e=>{tabanim=1;rt=e.k;render()},newc:()=>{if(S.chars.length>=15)return;const c=NC();c.player=S.me||"";S.chars.push(c);location.hash="ficha-"+c.id},
 delc:e=>{if(confirm("Excluir este ID Card?")){S.chars.splice(+e.i,1);render()}},
 newcamp:()=>{const n=prompt("Nome da campanha:");if(n){S.camps.push({id:uid(),name:n,date:new Date().toLocaleDateString("pt-BR"),role:"Mestre"});render()}},
-add:e=>{arr(e.ci,e.k).push(e.ci==="lib"?{id:uid()}:{});render()},del:e=>{(e.ci!==undefined?arr(e.ci,e.k):S[e.k]).splice(+e.i,1);render()},
+add:e=>{fresh=1;arr(e.ci,e.k).push(e.ci==="lib"?{id:uid()}:{});render()},del:e=>{(e.ci!==undefined?arr(e.ci,e.k):S[e.k]).splice(+e.i,1);render()},
 fav:e=>{const o=arr(e.ci,e.k)[e.i];o.fav=!o.fav;render()},
 addsk:e=>{S.chars[e.ci].skills.push({n:"Nova perícia",a:0,t:0,o:0});render()},
 addvit:e=>{S.chars[e.ci].vit.push({n:"Corrupção",c:0,m:10,k:"#f2f2f2"});render()},
@@ -239,8 +265,8 @@ addth:()=>{S.threats.push({name:"Nova ameaça"});render()},addrank:()=>{S.ranks.
 addc:()=>{S.combat.push({n:"Novo",c:50,m:50,ini:0});render()},next:()=>{S.turn++;render()},
 addcloud:()=>{const n=$("#cn").value.trim();if(n){S.home.push({t:$("#ct").value,n,d:$("#cd").value});render()}},
 take:e=>{const o=S.home[e.i],c=S.chars[cur()>=0?cur():0];if(o.t==="Poder")c.powers.push({name:o.n,desc:o.d});else if(o.t==="Item")c.inv.push({name:o.n,desc:o.d,qty:1});else if(o.t==="Perícia")c.skills.push({n:o.n,a:0,t:0,o:0});else c.cls=o.n;beep(880);alert("Adicionado a "+c.name)},
-roll:e=>{const d=e.d==="c"?+$("#cs").value:+e.d;if(!d||d<2)return;const r=Math.ceil(Math.random()*d),c=S.chars[cur()];S.rolls.unshift(`${c?.name||"Anônimo"} rolou D${d}: ${r}${r===d?" ★":""}`);S.rolls=S.rolls.slice(0,50);rt="combate";render()},
-rollsk:e=>{const c=S.chars[e.ci],s=c.skills[e.i],r=Math.ceil(Math.random()*20),t=tot(c,s);S.rolls.unshift(`${c.name} rolou ${s.n}: D20(${r}) + ${t} = ${r+t}`);rt="combate";render()},
+roll:e=>{const d=e.d==="c"?+$("#cs").value:+e.d;if(!d||d<2)return;const r=Math.ceil(Math.random()*d),c=S.chars[cur()];rolled=1;S.rolls.unshift(`${c?.name||"Anônimo"} rolou D${d}: ${r}${r===d?" ★":""}`);S.rolls=S.rolls.slice(0,50);rt="combate";render()},
+rollsk:e=>{const c=S.chars[e.ci],s=c.skills[e.i],r=Math.ceil(Math.random()*20),t=tot(c,s);rolled=1;S.rolls.unshift(`${c.name} rolou ${s.n}: D20(${r}) + ${t} = ${r+t}`);rt="combate";render()},
 av:e=>{const f=document.createElement("input");f.type="file";f.accept="image/*";f.onchange=()=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement("canvas"),k=Math.min(1,400/im.width);c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);S.chars[e.ci].avatar=c.toDataURL("image/jpeg",.8);save();render()};im.src=r.result};r.readAsDataURL(f.files[0])};f.click()}};
 document.addEventListener("click",ev=>{const b=ev.target.closest("[data-a]");if(!b)return;if(/^(fav|rollatk)$/.test(b.dataset.a))ev.preventDefault();beep();ACT[b.dataset.a]?.(b.dataset);if(b.dataset.a!=="rt")save()});
 document.addEventListener("input",ev=>{const t=ev.target,p=t.dataset.p;if(!p)return;setP(p,t.type==="number"||t.dataset.num?+t.value:t.value);save()});

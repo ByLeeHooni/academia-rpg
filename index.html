@@ -147,6 +147,21 @@ details.acc.new{animation:pop .4s}
 .toast .ts{font-size:11px;color:var(--mu)}.toast .tr2{display:flex;justify-content:space-between;align-items:baseline;gap:16px;margin-top:4px}
 .toast .tr2 small{color:var(--mu);font-weight:700}.toast .tr2 b{font-size:26px;color:#fff;animation:tpop .4s}
 .toast .tx{border:0;background:none;padding:2px 4px;color:var(--mu);align-self:flex-start}.toast .tx:hover{color:#fff;box-shadow:none}
+select[data-enh]{display:none!important}
+.dd{position:relative;display:block;width:100%;min-width:0}
+.dd-b{display:flex;align-items:center;justify-content:space-between;gap:10px;width:100%;text-align:left;background:#0b0b0b;border:1px solid #2e2e2e;border-radius:4px;padding:7px 10px;color:#fff;cursor:pointer;font:14px "Segoe UI",system-ui,sans-serif;text-transform:none;letter-spacing:0;white-space:nowrap;overflow:hidden}
+.dd-b:after{content:"";flex:none;width:6px;height:6px;border-right:2px solid #aaa;border-bottom:2px solid #aaa;transform:rotate(45deg) translateY(-2px);transition:transform .2s}
+.dd.open .dd-b{border-color:#fff;box-shadow:0 0 0 2px #ffffff22}.dd.open .dd-b:after{transform:rotate(-135deg) translateY(-1px)}
+.dd-m{position:fixed;z-index:60;background:#111;border:1px solid #fff;border-radius:6px;padding:4px;box-shadow:0 14px 34px #000d;max-height:260px;overflow:auto;animation:ddin .16s ease-out}
+@keyframes ddin{from{opacity:0;transform:translateY(-6px) scale(.97)}}
+.dd-o{display:flex;align-items:center;gap:10px;padding:8px 12px;border-radius:4px;cursor:pointer;color:#cfcfcf;font:13px "Segoe UI",system-ui,sans-serif;text-transform:none;letter-spacing:0;white-space:pre;transition:background .12s,color .12s,transform .12s}
+.dd-o:before{content:"";flex:none;width:3px;height:14px;border-radius:2px;background:transparent}
+.dd-o.sel{color:#fff;font-weight:700}.dd-o.sel:before{background:currentColor}
+.dd-o:hover,.dd-o.hl{background:#fff;color:#000;transform:translateX(3px)}
+.fl .dd-b{background:none;border:0;border-bottom:1px solid var(--mu);border-radius:0;padding:6px 0}
+td .dd-b{background:none;border:0;border-bottom:1px solid var(--ln);border-radius:0;padding:2px 4px;font-size:12px;justify-content:center;gap:6px}
+.tools .dd{width:auto;min-width:104px}.tools .dd-b{padding:3px 8px;font-size:12px}
+.row .dd{width:auto;min-width:210px}
 @media(prefers-reduced-motion:reduce){.mk{animation:none}}
 </style></head><body>
 <header><div class="logo">A.C.A.D.<small>FICHAS</small></div><nav id="nav"></nav>
@@ -191,6 +206,21 @@ function rtab(c,ci){const P=`chars.${ci}.`;
  if(rt==="desc")return [["notes","Anotações"],["look","Aparência"],["pers","Personalidade"],["hist","Histórico"],["obj","Objetivo"]].map(([k,l])=>fld(P+k,l,c[k]??"","a")).join("")+(isM()?`<h2 style="margin-top:12px">Arquivo confidencial</h2>`+[["pers","Personalidade"],["obj","Objetivos"],["fear","Medos"],["secr","Segredos"],["trau","Traumas"],["rel","Relacionamentos"]].map(([k,l])=>`<div class="sec">${fld(P+"sec."+k,l,c.sec[k]||"","a")}</div>`).join(""):`<p style="color:var(--mu)">🔒 Informações ocultas: só o Mestre vê.</p>`);
  return (rt==="rit"?`<div class="fl" style="margin-bottom:8px">${fld(P+"cp","Crédito de Pistas",c.cp??0,"number")}</div>`:"")+acc(P,rt,ci)}
 const arr=(ci,k)=>ci==="lib"?S.lib[k]:(S.chars[ci][k]=S.chars[ci][k]||[]);
+const GL={Vivo:"●",Morto:"✝",Executado:"✖",Assassino:"⚠"};
+function enh(root){root.querySelectorAll("select:not([data-enh])").forEach(sel=>{sel.dataset.enh=1;
+ const w=document.createElement("div"),b=document.createElement("button");w.className="dd";b.type="button";b.className="dd-b";
+ const lab=()=>{const o=sel.options[sel.selectedIndex];return o&&o.text.trim()?(GL[o.text]?GL[o.text]+" ":"")+o.text:"—"};
+ b.textContent=lab();w.append(b);sel.after(w);let m=null,hl=0;
+ const close=()=>{if(!m)return;m.remove();m=null;w.classList.remove("open");document.removeEventListener("mousedown",out,true);document.removeEventListener("keydown",key,true);removeEventListener("scroll",close,true);removeEventListener("resize",close)};
+ const out=e=>{if(!w.contains(e.target))close()};
+ const pick=i=>{sel.selectedIndex=i;close();sel.dispatchEvent(new Event("input",{bubbles:true}));sel.dispatchEvent(new Event("change",{bubbles:true}));b.textContent=lab()};
+ const paint=()=>[...m.children].forEach((o,i)=>o.classList.toggle("hl",i===hl));
+ const key=e=>{if(e.key==="Escape")close();else if(e.key==="ArrowDown"){e.preventDefault();hl=Math.min(hl+1,sel.options.length-1);paint()}else if(e.key==="ArrowUp"){e.preventDefault();hl=Math.max(hl-1,0);paint()}else if(e.key==="Enter"){e.preventDefault();pick(hl)}};
+ b.onclick=e=>{e.preventDefault();if(m)return close();hl=Math.max(0,sel.selectedIndex);m=document.createElement("div");m.className="dd-m";
+  [...sel.options].forEach((o,i)=>{const d=document.createElement("div");d.className="dd-o"+(i===sel.selectedIndex?" sel":"");d.textContent=(GL[o.text]?GL[o.text]+"  ":"")+(o.text.trim()||"—");d.onmousedown=ev=>ev.preventDefault();d.onclick=()=>pick(i);m.append(d)});
+  w.append(m);w.classList.add("open");paint();const r=b.getBoundingClientRect(),wd=Math.max(r.width,150);m.style.minWidth=wd+"px";m.style.left=Math.max(8,Math.min(r.left,innerWidth-wd-8))+"px";
+  m.style.top=(r.bottom+m.offsetHeight+12>innerHeight?Math.max(8,r.top-m.offsetHeight-4):r.bottom+4)+"px";
+  document.addEventListener("mousedown",out,true);document.addEventListener("keydown",key,true);addEventListener("scroll",close,true);addEventListener("resize",close)}})}
 const toast=(title,sub,rolls,mod,total,ico,tag)=>{let box=$("#toasts");if(!box){box=document.createElement("div");box.id="toasts";document.body.append(box)}
  const el=document.createElement("div");el.className="toast";
  el.innerHTML=`<div class="hx"><span>${esc(ico||"")}</span></div><div class="tb"><div class="tt">${esc(title)}${tag?`<em>${esc(tag)}</em>`:""}</div><div class="ts">${esc(sub||"")}</div>${total!=null?`<div class="tr2"><small>${esc(`[${rolls.join(", ")}]`+(mod?(mod>0?" + ":" − ")+Math.abs(mod):""))}</small><b>= ${total}</b></div>`:""}</div><button class="tx" aria-label="Fechar">✕</button>`;
@@ -240,7 +270,7 @@ ficha(){const ci=cur();if(ci<0)return "<p>Ficha não encontrada.</p>";const c=S.
  <div class="card pad"><h2>Perícias</h2><table><tr><th></th><th>Perícia</th><th>Atrib.</th><th>Treino</th><th>Outros</th><th>Total</th></tr>`+
  c.skills.map((s,i)=>hit(s)?`<tr><td><button class="dice" data-a="rollsk" data-ci="${ci}" data-i="${i}">🎲</button></td><td><input data-p="${B}skills.${i}.n" value="${esc(s.n)}"></td><td><select data-p="${B}skills.${i}.a" data-num="1" data-r="1">${c.attrs.map((a,j)=>`<option value="${j}" ${j==s.a?"selected":""}>${esc(a.n)}</option>`).join("")}</select></td><td><div class="seg">${[0,5,10,15].map(v=>`<button data-a="trn" data-ci="${ci}" data-i="${i}" data-v="${v}" class="${v==s.t?"on":""}">${v}</button>`).join("")}</div></td><td><input type="number" data-p="${B}skills.${i}.o" data-r="1" value="${s.o}"></td><td class="tr">+${tot(c,s)}</td></tr>`:"").join("")+`</table><div class="row" style="margin-top:8px"><button class="btn" data-a="addsk" data-ci="${ci}">+ Perícia</button></div></div>
  <div class="card pad"><div style="margin-bottom:8px;color:var(--mu)">Campanha: <b style="color:#fff">${esc(S.camps.find(o=>o.id===c.camp)?.name||"—")}</b></div><div class="tabs">${RT.map(([k,l])=>`<button class="${k===rt?"on":""}" data-a="rt" data-k="${k}">${l}</button>`).join("")}</div>${rtab(c,ci)}</div></div>`}};
-function render(){const key=location.hash+rt+ct+lt+(mod?mod.k+mod.cat:""),op=key===lk?[...document.querySelectorAll("#app details")].map(d=>d.open):[],sy=scrollY;lk=key;const pv={};document.querySelectorAll("#app .vb[data-bk]").forEach(e=>pv[e.dataset.bk]={pc:+e.dataset.pc,v:+e.dataset.val});render0();document.querySelectorAll("#app details").forEach((d,i)=>{if(op[i])d.open=true});scrollTo(0,sy);fx(pv)}
+function render(){const key=location.hash+rt+ct+lt+(mod?mod.k+mod.cat:""),op=key===lk?[...document.querySelectorAll("#app details")].map(d=>d.open):[],sy=scrollY;lk=key;const pv={};document.querySelectorAll("#app .vb[data-bk]").forEach(e=>pv[e.dataset.bk]={pc:+e.dataset.pc,v:+e.dataset.val});render0();document.querySelectorAll("#app details").forEach((d,i)=>{if(op[i])d.open=true});scrollTo(0,sy);fx(pv);enh($("#app"))}
 function fx(pv){
  document.querySelectorAll("#app .vb[data-bk]").forEach(e=>{const o=pv[e.dataset.bk];if(!o)return;const pc=+e.dataset.pc,v=+e.dataset.val;if(o.pc===pc&&o.v===v)return;
   const bs=[...e.children].filter(x=>x.tagName==="I");e.classList.add("nt");bs.forEach(b=>b.style.width=o.pc+"%");void e.offsetWidth;e.classList.remove("nt");bs.forEach(b=>b.style.width=pc+"%");
@@ -296,5 +326,5 @@ const bg=document.createElement("div");bg.id="bg";document.body.prepend(bg);
 let sd=20260;const rnd=()=>{sd=sd+0x6D2B79F5|0;let t=Math.imul(sd^sd>>>15,1|sd);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
 for(let i=0;i<18;i++){const m=document.createElement("div"),z=70+rnd()*130;m.className="mk";
 m.style.cssText=`width:${z}px;height:${z}px;left:${rnd()*100}%;top:${rnd()*100}%;--dx:${(rnd()-.5)*180}px;--dy:${(rnd()-.5)*180}px;--r:${(rnd()-.5)*50}deg;opacity:${.07+rnd()*.1};animation-duration:${45+rnd()*50}s;animation-delay:-${rnd()*60}s`;bg.append(m)}
-render();
+render();enh($("header"));
 </script></body></html>

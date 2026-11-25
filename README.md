@@ -1,6 +1,6 @@
 # 🎭 Academia RPG
 
-Plataforma de **fichas e gestão de RPG de mesa** com estética inspirada em *Danganronpa* (preto e branco, vermelho só nos detalhes de alerta, Monokumas ao fundo). Sem regras presas a um sistema: atributos, barras de status, perícias, talentos, evidências e itens são configuráveis.
+Plataforma de **fichas e gestão de RPG de mesa** com estética inspirada em *Danganronpa* (preto e branco, com Monokumas ao fundo). Sem regras presas a um sistema: atributos, barras de status, perícias, talentos, evidências e itens são configuráveis.
 
 ## Recursos
 

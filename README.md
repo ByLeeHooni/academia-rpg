@@ -14,7 +14,9 @@ Sem regras presas a um sistema específico: atributos, status, perícias, podere
 | **Talentos, Evidências, Itens** | Listas em sanfona; o botão “Adicionar da Biblioteca” copia o que o Mestre cadastrou |
 | **Biblioteca (só Mestre)** | Cadastro de talentos, evidências e itens disponíveis para todas as fichas |
 | **Combate** | Dados (D4–D20 e personalizado), histórico e ordem de turno |
-| **Amizade / Julgamento** | Vínculos de amizade com corações e habilidades liberadas pelo Mestre; argumentos e provas |
+| **Amizade** | Até 10 corações por vínculo; ao atingir os corações de uma habilidade o Mestre recebe um aviso para liberar ou recusar; o nome só aparece depois de liberada |
+| **Log da campanha (Mestre)** | Registro agrupado do que os jogadores fazem, com filtros por vida, dano, perícias, dados, talentos, história, amizade e itens |
+| **Julgamento** | Argumentos e provas |
 | **Campanhas, Ameaças, Homebrew, Patente** | Gestão de campanhas, NPCs e monstros, patentes |
 | **Permissões** | Mestre vê segredos e cria conteúdo; Jogador edita só a própria ficha |
 | **Qualidade de vida** | Salvamento automático, histórico de versões, busca, sons opcionais e layout responsivo |

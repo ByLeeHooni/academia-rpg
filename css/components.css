@@ -65,3 +65,10 @@ button.h{background:none;border:0;padding:0;cursor:pointer}button.h:hover{transf
 @media(prefers-reduced-motion:reduce){.mk{animation:none}}
 
 #sy{white-space:nowrap}
+/* hover suave por atributo */
+.pent .a.rl{cursor:pointer}
+.pent .a.rl:hover{background:var(--ac);transform:scale(1.04)}
+.pent .a.rl:hover:before{background:color-mix(in srgb,var(--ac) 9%,#0b0b0b)}
+.pent .a.rl:hover span.n{background:var(--ac)}
+.pent .a.rl:active{transform:scale(.95)}
+.pent .a,.pent .a:before,.pent .a span.n{transition:background .3s,transform .2s}

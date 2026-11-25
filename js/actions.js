@@ -1,5 +1,6 @@
 /* Ações (botões), eventos globais, versões e som. */
 const ACT={
+rolla:e=>{const c=S.chars[e.ci],a=c.attrs[e.i],v=+a.v||0,r=Array.from({length:Math.max(v,2)},()=>Math.ceil(Math.random()*20)),t=v>0?Math.max(...r):Math.min(...r),nm=a.f||a.n;toast(nm,c.name,r,0,t,(v>0?v:2)+"D20",v<=0?"MENOR":t===20?"20 NATURAL":"");lg(+e.ci,"dado","at:"+a.n,`rolou ${nm}: ${t}`,`rolou ${nm}`,t)},
 lf:e=>{lf=e.k;render()},
 hstep:e=>{const c=S.chars[e.ci],b=c.bonds[e.bi];b.hearts=Math.max(0,Math.min(HM,b.hearts+ +e.d));hchk(c,b);pendToasts();render()},
 pok:e=>{const q=S.pend.find(x=>x.id===e.pid);if(!q)return;S.pend=S.pend.filter(x=>x!==q);const c=S.chars.find(x=>x.id===q.cid),b=(c.bonds||[]).find(x=>x.id===q.fid),f=S.chars.find(x=>x.id===q.fid),r=(f.rewards||[]).find(x=>x.id===q.rid);if(b){b.st=b.st||{};b.st[q.rid]="ok"}lg(S.chars.indexOf(c),"amizade","ok:"+q.rid,`liberou “${r.name}” (vínculo com ${f.name})`,"liberou habilidades de amizade",r.name);pendToasts();render()},

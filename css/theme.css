@@ -1,0 +1,46 @@
+/* refinamento visual */
+main{max-width:1280px;padding:24px 20px;animation:none}
+body:before{opacity:.5}
+.card{border-radius:6px;border-left-width:1px;border-color:#2a2a2a;background:#121212;box-shadow:0 8px 24px #0006;animation:none}
+.card:hover{border-color:#4a4a4a;box-shadow:0 8px 24px #0006}
+.pad{padding:16px}
+.btn{clip-path:none;border-radius:4px;padding:7px 14px;font-size:12px;letter-spacing:.04em}
+.btn:hover{box-shadow:none}
+input,select,textarea{border-radius:4px;border-color:#2e2e2e;background:#0b0b0b}
+input:focus,select:focus,textarea:focus{border-color:#aaa;box-shadow:0 0 0 2px #ffffff22}
+h2{font-size:12px;letter-spacing:.18em;color:#ddd;margin-bottom:14px}
+.tabs{flex-wrap:wrap;overflow:visible;gap:2px 8px;border-bottom:1px solid #262626;margin-bottom:14px}
+.tabs button{flex:none;padding:8px 6px;font-size:11px;letter-spacing:.1em;color:var(--mu)}
+.tabs button:hover{box-shadow:none;color:#fff;border-bottom-color:#555}
+.tabs button.on{color:#fff;border-bottom-color:#fff;text-shadow:none}
+details.acc{background:#171717;border:1px solid #262626;border-radius:6px;animation:none;margin-bottom:8px}
+details.acc[open]{border-color:#454545}
+details.acc summary{list-style:none;display:flex;align-items:center;gap:8px;padding:10px 12px}
+details.acc summary::-webkit-details-marker{display:none}
+details.acc summary:before{content:"›";color:var(--mu);font-size:18px;line-height:1;transition:transform .2s}
+details.acc[open] summary:before{transform:rotate(90deg)}
+.tal,.pent .c,.logo small{text-shadow:none}
+.av{box-shadow:none}.pic{clip-path:none;border-radius:6px 0 0 6px}
+.pent .a{box-shadow:none;border-color:#6a6a6a}.pent .a:hover{border-color:#fff;box-shadow:none}
+.sheet{gap:20px}.vb{border-radius:6px;overflow:hidden}.ban{border-radius:6px 6px 0 0;border-left:0}
+th{padding-bottom:6px;letter-spacing:.08em}tr:hover td{background:#ffffff08}
+::-webkit-scrollbar{width:8px;height:8px}::-webkit-scrollbar-thumb{background:#333;border-radius:4px}::-webkit-scrollbar-track{background:transparent}
+#app.pg>*{animation:in .3s}
+/* atributos estilo DR1 */
+.sheet{grid-template-columns:minmax(280px,1fr) minmax(360px,1.25fr) minmax(300px,1.1fr)}
+@media(max-width:1000px){.sheet{grid-template-columns:1fr}}
+.tal{display:inline-block;background:#fff;color:#000;padding:3px 12px;transform:skewX(-10deg);font-style:italic;letter-spacing:.08em;margin-bottom:4px}
+.pent .a{width:92px;height:92px;margin:-46px;border:0;border-radius:0;background:#fff;clip-path:polygon(25% 3%,75% 3%,100% 50%,75% 97%,25% 97%,0 50%);transition:transform .2s}
+.pent .a:before{content:"";position:absolute;inset:3px;background:#0b0b0b;clip-path:polygon(25% 3%,75% 3%,100% 50%,75% 97%,25% 97%,0 50%);transition:background .2s}
+.pent .a>*{position:relative;z-index:1}.pent .a:hover{transform:scale(1.06)}.pent .a:hover:before{background:#262626}
+.pent .nv{font:italic 900 28px/1 "Courier New",monospace;color:#fff}
+.pent .a span.n{background:#fff;color:#000;font:800 10px "Courier New",monospace;letter-spacing:.1em;padding:1px 8px;transform:skewX(-12deg);margin-top:2px}
+.pent .a input{width:50px;font-style:italic}
+.pent .c{background:#fff;color:#000;border:0;padding:7px 16px;font-weight:900;letter-spacing:.28em;transform:translate(-50%,-50%) rotate(-4deg);clip-path:polygon(0 10%,100% 0,98% 90%,2% 100%)}
+.sp{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}.sp line,.sp polygon{stroke:#555;stroke-width:1;fill:none;stroke-dasharray:3 4}
+.pen{position:absolute;top:10px;right:10px;border:0;background:none;padding:5px;color:#fff;opacity:.7;border-radius:4px;display:grid}.pen:hover{opacity:1;border:0;box-shadow:none}.pen.on{background:#fff;color:#000;opacity:1}
+.seg{display:inline-flex;border:1px solid #2e2e2e;border-radius:4px;overflow:hidden}
+.seg button{border:0;border-radius:0;padding:3px 0;width:24px;font-size:11px;background:#0b0b0b;color:var(--mu)}
+.seg button:hover{box-shadow:none;background:#222;color:#fff}.seg button.on,.seg button.on:hover{background:#fff;color:#000;font-weight:700}
+td select{appearance:none;-webkit-appearance:none;text-align:center;text-align-last:center;padding:2px;font-size:12px;cursor:pointer}
+input[type=number]{-moz-appearance:textfield}input[type=number]::-webkit-inner-spin-button,input[type=number]::-webkit-outer-spin-button{-webkit-appearance:none;margin:0}

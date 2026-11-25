@@ -1,40 +1,57 @@
 # 🎭 Academia RPG
 
-Plataforma de **fichas e gestão de RPG de mesa** com estética inspirada em *Danganronpa*: interface sombria, futurista, com detalhes em neon (rosa, roxo e azul) e clima de investigação e julgamento.
-
-Sem regras presas a um sistema específico: atributos, status, perícias, poderes e itens são todos configuráveis.
+Plataforma de **fichas e gestão de RPG de mesa** com estética inspirada em *Danganronpa* (preto e branco, vermelho só nos detalhes de alerta, Monokumas ao fundo). Sem regras presas a um sistema: atributos, barras de status, perícias, talentos, evidências e itens são configuráveis.
 
 ## Recursos
 
 | Área | O que faz |
 |---|---|
-| **ID Cards** | Lista de ID Cards (fichas) com foto, Talento Supremo, classe e busca |
-| **Ficha** | Dados básicos, hexágono de 6 atributos (CRI, MAN, COM, PER, INT, PRE) editáveis e barras de status (HP, Stamina, Mental) com botões «‹›» |
-| **Perícias** | Atributo relacionado, treino, bônus e rolagem de D20 com um clique |
-| **Talentos, Evidências, Itens** | Listas em sanfona; o botão “Adicionar da Biblioteca” copia o que o Mestre cadastrou |
-| **Biblioteca (só Mestre)** | Cadastro de talentos, evidências e itens disponíveis para todas as fichas |
-| **Combate** | Dados (D4–D20 e personalizado), histórico e ordem de turno |
-| **Amizade** | Até 10 corações por vínculo; ao atingir os corações de uma habilidade o Mestre recebe um aviso para liberar ou recusar; o nome só aparece depois de liberada |
-| **Log da campanha (Mestre)** | Registro agrupado do que os jogadores fazem, com filtros por vida, dano, perícias, dados, talentos, história, amizade e itens |
-| **Julgamento** | Argumentos e provas |
-| **Campanhas, Ameaças, Homebrew, Patente** | Gestão de campanhas, NPCs e monstros, patentes |
-| **Permissões** | Mestre vê segredos e cria conteúdo; Jogador edita só a própria ficha |
-| **Qualidade de vida** | Salvamento automático, histórico de versões, busca, sons opcionais e layout responsivo |
+| **ID Cards** | Fichas com foto, Talento Supremo, Status de Vida, hexágono de atributos (CRI, MAN, COM, PER, INT, PRE), barras animadas e perícias com rolagem de D20 |
+| **Abas da ficha** | Confronto (dados e ataques), Talentos, Evidências, Itens, Amizade, Julgamento e Perfil |
+| **Amizade** | Até 10 corações por vínculo; o Mestre define as habilidades de cada ficha e libera (ou recusa) quando o jogador atinge os corações; o nome só aparece depois de liberada |
+| **Campanhas** | Capa, descrição, jogadores, combates, Escudo do Mestre e **Log** agrupado (só Mestre) com filtros |
+| **Biblioteca (Mestre)** | Talentos, evidências e itens que os jogadores adicionam às fichas |
+| **Tempo real** | Alterações aparecem para os outros sem recarregar a página (veja [docs/SYNC.md](docs/SYNC.md)) |
+
+## Estrutura
+
+```
+index.html          página única que carrega os arquivos abaixo
+css/                base.css · theme.css · components.css
+js/
+  config.js         chaves da sincronização (opcional)
+  utils.js          DOM, escape, campos, sons, notificações, dados, menus suspensos
+  data.js           atributos, ficha padrão, listas editáveis, rótulos
+  state.js          estado, salvamento, versões, migrações, log de atividades, acesso
+  ui-ficha.js       ficha: sanfonas, abas, amizade/corações, janela da biblioteca
+  ui-campaign.js    campanha: log agrupado, avisos do Mestre
+  pages.js          páginas (ID Cards, campanhas, ameaças, biblioteca, patentes, ficha)
+  render.js         renderização, animações das barras e rotas
+  actions.js        ações dos botões e eventos globais
+  background.js     fundo animado
+  sync.js           sincronização em tempo real (Supabase) e entre abas
+  main.js           inicialização
+assets/monokuma.png imagem do fundo
+supabase/schema.sql tabela usada na sincronização
+tools/build.py      gera dist/academia.html (arquivo único)
+docs/               ROADMAP.md · SYNC.md
+```
+
+Os scripts são clássicos (sem build obrigatório) e compartilham o mesmo escopo; a **ordem** dos `<script>` em `index.html` importa.
 
 ## Como usar
 
-É um site estático em um único arquivo, sem build.
+- **Publicado:** GitHub Pages, branch `main`.
+- **Local:** sirva a pasta (`python3 -m http.server`) e abra `http://localhost:8000`.
+- **Arquivo único:** `python3 tools/build.py` gera `dist/academia.html`.
 
-1. Abra `index.html` no navegador, ou
-2. Publique pelo GitHub Pages (Settings → Pages → branch `main`).
+Sem configuração, os dados ficam no `localStorage` do navegador (e sincronizam entre abas do mesmo navegador). Para várias pessoas em dispositivos diferentes, configure o Supabase em [docs/SYNC.md](docs/SYNC.md).
 
-Os dados ficam salvos no `localStorage` do navegador.
+## Limitações
 
-## Estado atual e limitações
-
-- Permissões Mestre/Jogador são um alternador na interface; **não há login nem sincronização** entre usuários ainda.
-- Veja o plano em [docs/ROADMAP.md](docs/ROADMAP.md).
+- Não há login: "Mestre" e "Jogador" são modos da interface e a proteção de acesso é visual. Na sincronização, o **código da sala** funciona como senha compartilhada, sem segurança real. Autenticação é o próximo passo ([ROADMAP](docs/ROADMAP.md)).
+- Projeto de fãs, sem afiliação com os criadores de Danganronpa.
 
 ## Licença
 
-MIT. Veja [LICENSE](LICENSE). Projeto de fãs, sem afiliação com os criadores de Danganronpa.
+MIT. Veja [LICENSE](LICENSE).

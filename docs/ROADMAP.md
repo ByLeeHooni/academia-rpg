@@ -1,7 +1,8 @@
 # Roadmap
 
 ## Próximos passos
-- [ ] Banco de dados e login (usuários, personagens, campanhas, inventários, poderes, perícias, nuvem)
+- [x] Banco de dados compartilhado em tempo real (Supabase, por sala)
+- [ ] Login (Supabase Auth) e Mestre por campanha
 - [ ] Permissões reais por campanha (Mestre / Jogador)
 - [ ] Página própria da campanha (jogadores, mapas, arquivos)
 - [ ] Modo julgamento em fases (debate, votação, tempo)

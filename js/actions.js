@@ -10,7 +10,7 @@ addbond:e=>{const id=$("#fr")?.value;if(!id)return;const c=S.chars[e.ci],f=S.cha
 heart:e=>{const c=S.chars[e.ci],b=c.bonds[e.bi],n=+e.n;b.hearts=b.hearts===n?n-1:n;if(b.hearts===n)pulse=`[data-a=heart][data-ci="${e.ci}"][data-bi="${e.bi}"][data-n="${n}"]`;hchk(c,b);pendToasts();render()},
 rmbond:e=>{const b=S.chars[e.ci].bonds;if(isM()||!b[e.bi].hearts){b.splice(e.bi,1);render()}},
 claim:e=>{const c=S.chars[e.ci],b=c.bonds[e.bi],f=S.chars.find(x=>x.id===b.id),r=(f.rewards||[]).find(x=>x.id===e.rid);if(!can(c)||!r||(b.claimed||[]).includes(r.id)||b.hearts<r.hearts||(b.st||{})[r.id]!=="ok")return;(b.claimed=b.claimed||[]).push(r.id);arr(e.ci,"powers").push({id:uid(),name:r.name,cat:"Amizade",desc:`${r.desc||""}\n(Vínculo com ${f.name}, ${r.hearts} ♥)`});toast(r.name,"Adicionada aos seus Talentos",null,0,null,"♥","NOVA");render()},
-aed:()=>{aed=!aed;render()},trn:e=>{S.chars[e.ci].skills[e.i].t=+e.v;render()},
+aed:()=>{aed=!aed;render()},trn:e=>{S.chars[e.ci].skills[e.i].t=+e.v;pulse=`[data-a=trn][data-ci="${e.ci}"][data-i="${e.i}"][data-v="${e.v}"]`;render()},
 lt:e=>{lt=e.k;render()},open:e=>{mod={k:e.k,ci:e.ci,cat:"",q:""};render()},close:()=>{mod=null;render()},mcat:e=>{mod.cat=e.v;render()},
 mtake:e=>{const o=S.lib[mod.k].find(x=>x.id===e.id);if(o)arr(mod.ci,mod.k).push({...o,id:uid()});render()},
 addcat:e=>{fresh=1;arr(e.ci,"inv").push({cat:e.c,name:"Novo item",qty:1});render()},
@@ -41,7 +41,7 @@ addc:()=>{S.combat.push({n:"Novo",c:50,m:50,ini:0});render()},next:()=>{S.turn++
 addcloud:()=>{const n=$("#cn").value.trim();if(n){S.home.push({t:$("#ct").value,n,d:$("#cd").value});render()}},
 take:e=>{const o=S.home[e.i],c=S.chars[cur()>=0?cur():0];if(o.t==="Poder")c.powers.push({name:o.n,desc:o.d});else if(o.t==="Item")c.inv.push({name:o.n,desc:o.d,qty:1});else if(o.t==="Perícia")c.skills.push({n:o.n,a:0,t:0,o:0});else c.cls=o.n;beep(880);alert("Adicionado a "+c.name)},
 roll:e=>{const d=+e.d;if(!d||d<2)return;const r=Math.ceil(Math.random()*d),c=S.chars[cur()];toast("D"+d,c?.name,[r],0,r,"D"+d,r===d?"MÁXIMO":"");lg(cur(),"dado","d"+d,`rolou D${d}: ${r}`,`rolou D${d}`,r)},
-rollsk:e=>{const c=S.chars[e.ci],s=c.skills[e.i],r=Math.ceil(Math.random()*20),t=tot(c,s);toast(s.n,c.name,[r],t,r+t,"D20",r===20?"20 NATURAL":r===1?"FALHA":"");lg(+e.ci,"dado","sk:"+s.n,`rolou ${s.n}: ${r+t}`,`rolou ${s.n}`,r+t)},
+rollsk:e=>{const c=S.chars[e.ci],s=c.skills[e.i],v=+(c.attrs[s.a]||{}).v||0,r=Array.from({length:Math.max(v,2)},()=>Math.ceil(Math.random()*20)),b=v>0?Math.max(...r):Math.min(...r),t=tot(c,s);toast(s.n,c.name,r,t,b+t,(v>0?v:2)+"D20",v<=0?"MENOR":b===20?"20 NATURAL":"");lg(+e.ci,"dado","sk:"+s.n,`rolou ${s.n}: ${b+t}`,`rolou ${s.n}`,b+t)},
 av:e=>{const f=document.createElement("input");f.type="file";f.accept="image/*";f.onchange=()=>{const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const c=document.createElement("canvas"),k=Math.min(1,400/im.width);c.width=im.width*k;c.height=im.height*k;c.getContext("2d").drawImage(im,0,0,c.width,c.height);S.chars[e.ci].avatar=c.toDataURL("image/jpeg",.8);save();render()};im.src=r.result};r.readAsDataURL(f.files[0])};f.click()}};
 document.addEventListener("click",ev=>{const b=ev.target.closest("[data-a]");if(!b)return;if(/^(fav|rollatk)$/.test(b.dataset.a))ev.preventDefault();beep();ACT[b.dataset.a]?.(b.dataset);if(b.dataset.a!=="rt")save()});
 document.addEventListener("input",ev=>{const t=ev.target,p=t.dataset.p;if(!p)return;setP(p,t.type==="number"||t.dataset.num?+t.value:t.value);save()});

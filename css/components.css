@@ -74,3 +74,11 @@ button.h{background:none;border:0;padding:0;cursor:pointer}button.h:hover{transf
 .pent .a,.pent .a:before,.pent .a span.n{transition:background .3s,transform .2s}
 .rmv{border:0;background:none;color:var(--mu);padding:0 6px;font-size:11px;vertical-align:middle;opacity:.6}
 .rmv:hover{color:#fff;opacity:1;box-shadow:none}
+/* treino e atributo das perícias seguem a cor do atributo */
+.seg{transition:border-color .3s}tr:hover .seg{border-color:color-mix(in srgb,var(--ac,#fff) 40%,#2e2e2e)}
+.seg button{transition:background .3s,color .3s,transform .15s}
+.seg button:hover{color:var(--ac,#fff);background:color-mix(in srgb,var(--ac,#fff) 13%,#0b0b0b)}
+.seg button.on,.seg button.on:hover{background:var(--ac,#fff);color:#000}
+.seg button.pop{animation:spop .35s}@keyframes spop{0%{transform:scale(1.35)}100%{transform:scale(1)}}
+td .at{display:inline-block;font:700 12px "Courier New",monospace;letter-spacing:.06em;color:var(--ac,#fff);padding:2px 6px}
+tr .dice{transition:color .3s,transform .35s}tr:hover .dice{color:var(--ac,#fff)}

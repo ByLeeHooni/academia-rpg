@@ -74,8 +74,14 @@ button.h{background:none;border:0;padding:0;cursor:pointer}button.h:hover{transf
 .pent .a,.pent .a:before,.pent .a span.n{transition:background .3s,transform .2s}
 .rmv{border:0;background:none;color:var(--mu);padding:0 6px;font-size:11px;vertical-align:middle;opacity:.6}
 .rmv:hover{color:#fff;opacity:1;box-shadow:none}
-/* treino: só o nível escolhido acima de 0 ganha a cor do atributo */
-.seg button{transition:background .3s,color .3s,transform .15s}
-.seg button.on.up,.seg button.on.up:hover{background:var(--ac,#fff);color:#000}
+/* treino: cores fixas por nível (0 neutro · 5 azul · 10 roxo · 15 dourado) */
+.seg button{position:relative;overflow:hidden;transition:background .3s,color .3s,transform .15s}
+.seg button.on.l5,.seg button.on.l5:hover{background:#6b9bd8;color:#0a1220}
+.seg button.on.l10,.seg button.on.l10:hover{background:#a07be0;color:#150b26;animation:glow10 4s ease-in-out infinite}
+.seg button.on.l15,.seg button.on.l15:hover{background:linear-gradient(135deg,#f3d272,#d9a93a);color:#2b1d00}
+.seg button.on.l15:after{content:"";position:absolute;top:0;bottom:0;left:-60%;width:40%;background:linear-gradient(100deg,transparent,#ffffffaa,transparent);transform:skewX(-20deg);animation:shine 7s ease-in-out infinite;pointer-events:none}
+@keyframes glow10{0%,100%{box-shadow:inset 0 0 0 0 #ffffff00}50%{box-shadow:inset 0 0 9px 1px #ffffff55}}
+@keyframes shine{0%{left:-60%}28%,100%{left:130%}}
 .seg button.pop{animation:spop .35s}@keyframes spop{0%{transform:scale(1.35)}100%{transform:scale(1)}}
+.seg button.on.l10.pop{animation:spop .35s,glow10 4s ease-in-out .35s infinite}
 td .at{display:inline-block;font:700 12px "Courier New",monospace;letter-spacing:.06em;color:#fff;padding:2px 6px}

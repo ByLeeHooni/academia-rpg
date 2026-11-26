@@ -10,7 +10,7 @@ Plataforma de **fichas e gestão de RPG de mesa** com estética inspirada em *Da
 | **Abas da ficha** | Confronto (dados e ataques), Talentos, Evidências, Itens, Amizade, Julgamento e Perfil |
 | **Amizade** | Até 10 corações por vínculo; o Mestre define as habilidades de cada ficha e libera (ou recusa) quando o jogador atinge os corações; o nome só aparece depois de liberada |
 | **Campanhas** | Capa, descrição, jogadores, combates, Escudo do Mestre e **Log** agrupado (só Mestre) com filtros |
-| **Biblioteca (Mestre)** | Talentos, evidências e itens que os jogadores adicionam às fichas |
+| **Biblioteca (Mestre)** | Talentos Supremos, talentos, evidências e itens que os jogadores adicionam às fichas |
 | **Tempo real** | Alterações aparecem para os outros sem recarregar a página (veja [docs/SYNC.md](docs/SYNC.md)) |
 
 ## Estrutura

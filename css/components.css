@@ -72,3 +72,5 @@ button.h{background:none;border:0;padding:0;cursor:pointer}button.h:hover{transf
 .pent .a.rl:hover span.n{background:var(--ac)}
 .pent .a.rl:active{transform:scale(.95)}
 .pent .a,.pent .a:before,.pent .a span.n{transition:background .3s,transform .2s}
+.rmv{border:0;background:none;color:var(--mu);padding:0 6px;font-size:11px;vertical-align:middle;opacity:.6}
+.rmv:hover{color:#fff;opacity:1;box-shadow:none}

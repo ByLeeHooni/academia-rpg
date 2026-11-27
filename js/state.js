@@ -5,6 +5,7 @@ try{const r=localStorage.getItem("acad2");if(r)S=Object.assign(S,JSON.parse(r))}
 S.lib=S.lib||{powers:[{name:"Contra-argumento",cat:"Julgamento",cost:"5 Concentração",cd:"1 turno",lvl:1,desc:"Anula uma afirmação falsa durante o julgamento."}],rit:[{name:"Cartucho de bala",cat:"Pista",loc:"Ginásio",rel:"Vítima",desc:"Encontrado perto do corpo. Calibre incompatível com a arma do suspeito."}],inv:[{name:"E-Handbook",cat:"Geral",qty:1,weight:1,desc:"Terminal de estudante da Academia."},{name:"Faca antiga",cat:"Arma",dmg:"1d4",crit:"x2",qty:1,weight:1}]};
 if(!S.lib.ult)S.lib.ult=[{name:"Detetive",desc:"Enxerga o que os outros deixam passar."},{name:"Hacker",desc:"Invade qualquer sistema da Academia."},{name:"Médico",desc:"Cuida dos feridos e lê o corpo como um livro."}];
 for(const k in S.lib)S.lib[k].forEach(o=>o.id=o.id||uid());
+(S.lib.ult||[]).forEach(o=>{if(o.effs)o.effs=o.effs.filter(e=>e.k!=="rew")});S.chars.forEach(c=>(c.rewards||[]).forEach(r=>{if(r.effs)r.effs=r.effs.filter(e=>e.k!=="rew")}));
 S.chars.forEach(c=>{if(c.attrs&&c.attrs.map(a=>a.n).join()==="AGI,FOR,INT,PRE,VIG"){const o={},old=c.attrs.map(a=>a.n);c.attrs.forEach(a=>o[a.n]=a.v);c.attrs=ATTRS.map(([n,f])=>({n,f,v:o[n]??1}));(c.skills||[]).forEach(s=>{const j=c.attrs.findIndex(a=>a.n===old[s.a]);s.a=SK[s.n]??(j>=0?j:0)})}});
 S.chars.forEach(c=>{if(c.quote==="A verdade sempre vem à tona.")c.quote="";(c.vit||[]).forEach(v=>{if(v.n==="Stamina")v.n="Concentração";if(v.n==="Mental")v.n="Esperança"});const RN={"Persuasão":"Argumentação","Combate":"Lógica","Percepção":"Atenção","Tecnologia":"Eletrônicos","Medicina":"Autópsia","Intimidação":"Pressão"};(c.skills||[]).forEach(k=>{if(RN[k.n]){k.n=RN[k.n];k.a=SK[k.n]??k.a}})});
 S.pend=S.pend||[];S.log=S.log||[];
@@ -43,8 +44,7 @@ function fxApply(c,src,effs){c.fx=c.fx||[];c.vit=c.vit||[];c.attrs=c.attrs||[];c
  else if(e.k==="attr"){const x=c.attrs.find(z=>lc(z.n));if(x){x.v+=v;c.fx.push({src,k:"attr",t:x.n,v})}}
  else if(e.k==="skb"){const x=c.skills.find(z=>lc(z.n));if(x){x.o=(+x.o||0)+v;c.fx.push({src,k:"skb",t:x.n,v})}}
  else if(e.k==="ska"&&t){const a=Math.max(0,c.attrs.findIndex(z=>String(z.n).toLowerCase()===(e.d||"").trim().toLowerCase()));c.skills.push({n:t,a,t:v,o:0,src})}
- else if(e.k==="item"&&t)(c.inv=c.inv||[]).push({id:uid(),name:t,qty:v||1,desc:e.d||"",cat:"Geral",src});
- else if(e.k==="tal"&&t)(c.powers=c.powers||[]).push({id:uid(),name:t,desc:e.d||"",cat:"Efeito",src});
- else if(e.k==="rew"&&t)(c.rewards=c.rewards||[]).push({id:uid(),hearts:Math.min(HM,Math.max(1,v||1)),name:t,desc:e.d||"",src})})}
+ else if(e.k==="item"&&t){const L=((S.lib||{}).inv||[]).find(o=>o.name===t)||{};(c.inv=c.inv||[]).push({...L,id:uid(),name:t,qty:v||+L.qty||1,desc:L.desc||e.d||"",cat:L.cat||"Geral",src})}
+ else if(e.k==="tal"&&t){const L=((S.lib||{}).powers||[]).find(o=>o.name===t)||{};(c.powers=c.powers||[]).push({...L,id:uid(),name:t,desc:L.desc||e.d||"",cat:L.cat||"Efeito",src})}})}
 function fxRevoke(c,src){(c.fx||[]).filter(z=>z.src===src).forEach(z=>{if(z.k==="vit"){const x=(c.vit||[]).find(y=>y.n===z.t);if(x){x.m-=z.v;x.c=Math.max(0,Math.min(x.m,x.c))}}else if(z.k==="attr"){const x=(c.attrs||[]).find(y=>y.n===z.t);if(x)x.v-=z.v}else if(z.k==="skb"){const x=(c.skills||[]).find(y=>y.n===z.t);if(x)x.o=(+x.o||0)-z.v}});
  c.fx=(c.fx||[]).filter(z=>z.src!==src);["skills","inv","powers","rewards"].forEach(k=>{if(c[k])c[k]=c[k].filter(z=>z.src!==src)})}

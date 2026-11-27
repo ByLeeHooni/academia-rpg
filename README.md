@@ -11,7 +11,7 @@ Plataforma de **fichas e gestão de RPG de mesa** com estética inspirada em *Da
 | **Amizade** | Até 10 corações por vínculo; habilidades no mesmo nível de corações são opções A/B (escolhe-se uma, as outras somem); o Mestre libera ou recusa cada nível; perder corações perde a habilidade e permite escolher de novo |
 | **Campanhas** | Capa, descrição, jogadores, combates, Escudo do Mestre e **Log** agrupado (só Mestre) com filtros |
 | **Biblioteca (Mestre)** | Talentos Supremos, talentos, evidências e itens que os jogadores adicionam às fichas |
-| **Efeitos automáticos** | Talentos Supremos (escolhidos só pelo Mestre) e habilidades de amizade aplicam sozinhos: ± HP/Concentração/Esperança, ± atributos, bônus ou novas perícias, itens, talentos e habilidades de amizade; tudo é revertido ao perder a habilidade ou trocar o Ultimate |
+| **Efeitos automáticos** | Talentos Supremos (escolhidos só pelo Mestre) e habilidades de amizade aplicam sozinhos: ± status, ± atributos, bônus ou novas perícias, itens e talentos da Biblioteca (tudo escolhido em listas); tudo é revertido ao perder a habilidade ou trocar o Ultimate |
 | **Tempo real** | Alterações aparecem para os outros sem recarregar a página (veja [docs/SYNC.md](docs/SYNC.md)) |
 
 ## Estrutura

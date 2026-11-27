@@ -2,6 +2,7 @@
 const $=s=>document.querySelector(s),uid=()=>Math.random().toString(36).slice(2,8);
 const esc=s=>String(s??"").replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
 const beep=f=>{if(!snd)return;try{const a=new AudioContext(),o=a.createOscillator(),g=a.createGain();o.frequency.value=f||660;o.type="square";g.gain.value=.04;o.connect(g);g.connect(a.destination);o.start();o.stop(a.currentTime+.06)}catch(e){}};
+const getP=p=>p.split(".").reduce((o,k)=>o==null?o:o[k],S);
 const setP=(p,v)=>{const k=p.split(".");let o=S;for(let i=0;i<k.length-1;i++)o=o[k[i]];o[k.at(-1)]=v};
 const fld=(p,l,v,t)=>`<label>${l}${t==="a"?`<textarea data-p="${p}">${esc(v)}</textarea>`:`<input data-p="${p}" ${t?`type="${t}"`:""} value="${esc(v)}">`}</label>`;
 const GL={Vivo:"●",Morto:"✝",Executado:"✖",Assassino:"⚠"};

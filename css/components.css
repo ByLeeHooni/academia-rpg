@@ -86,3 +86,8 @@ button.h{background:none;border:0;padding:0;cursor:pointer}button.h:hover{transf
 .seg button.on.l10.pop{animation:spop .35s,glow10 4s ease-in-out .35s infinite}
 td .at{display:inline-block;font:700 12px "Courier New",monospace;letter-spacing:.06em;color:#fff;padding:2px 6px}
 .fl .tv{font-size:14px;color:#fff;text-transform:none;letter-spacing:0;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+/* efeitos automáticos e opções A/B */
+.fxe{display:flex;flex-direction:column;gap:6px;margin:4px 0}.fxe>label{font-size:10px;text-transform:uppercase;color:var(--mu)}
+.fxr{display:flex;flex-wrap:wrap;gap:6px;align-items:center;padding:8px;border:1px solid #262626;border-radius:4px;background:#111}
+.fxr .dd{flex:1 1 150px;width:auto}.fxr input{width:auto!important;flex:1 1 110px}.fxr input[type=number]{flex:0 0 70px}
+.rw.off{opacity:.3}.rw .fxs{font-size:11px;color:#cfcfcf;margin:0 0 6px}

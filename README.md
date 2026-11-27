@@ -8,9 +8,10 @@ Plataforma de **fichas e gestão de RPG de mesa** com estética inspirada em *Da
 |---|---|
 | **ID Cards** | Fichas com foto, Talento Supremo, Status de Vida, hexágono de atributos (CRI, MAN, COM, PER, INT, PRE), barras animadas e perícias com rolagem de D20 |
 | **Abas da ficha** | Confronto (dados e ataques), Talentos, Evidências, Itens, Amizade, Julgamento e Perfil |
-| **Amizade** | Até 10 corações por vínculo; o Mestre define as habilidades de cada ficha e libera (ou recusa) quando o jogador atinge os corações; o nome só aparece depois de liberada |
+| **Amizade** | Até 10 corações por vínculo; habilidades no mesmo nível de corações são opções A/B (escolhe-se uma, as outras somem); o Mestre libera ou recusa cada nível; perder corações perde a habilidade e permite escolher de novo |
 | **Campanhas** | Capa, descrição, jogadores, combates, Escudo do Mestre e **Log** agrupado (só Mestre) com filtros |
 | **Biblioteca (Mestre)** | Talentos Supremos, talentos, evidências e itens que os jogadores adicionam às fichas |
+| **Efeitos automáticos** | Talentos Supremos (escolhidos só pelo Mestre) e habilidades de amizade aplicam sozinhos: ± HP/Concentração/Esperança, ± atributos, bônus ou novas perícias, itens, talentos e habilidades de amizade; tudo é revertido ao perder a habilidade ou trocar o Ultimate |
 | **Tempo real** | Alterações aparecem para os outros sem recarregar a página (veja [docs/SYNC.md](docs/SYNC.md)) |
 
 ## Estrutura
